@@ -1,0 +1,284 @@
+<html>
+<head>
+<title>Instapaper Options</title>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+//triggerError: Creates an error popup containing the input message
+function triggerError(m) {
+  $('#error').css({
+    'display':'block',
+    'opacity':'1.0'
+  });
+  $('#errorfield').text(m);
+}
+
+//auth: Retrieves user/pass from localStorage and returns authentication status to input function
+function auth(func) {
+  $.ajax({
+    'method':'post',
+    'cache':0,
+    'url':'https://www.instapaper.com/api/authenticate',
+    data:{
+      'username':localStorage['un'],
+      'password':localStorage['pw'],
+      'random':(new Date()).getTime()
+    },
+    complete:function(d) {
+      func(d.status);
+    }
+  });
+}
+
+$(document).ready(function() {
+  $('#restart').click(function() {
+    location.href=location.href;
+  });
+  
+  $('#formuser').submit(function(e) {
+    e.preventDefault();
+    $('#senduser').attr('disabled',1);
+    localStorage['un']=$('#user').val();
+    localStorage['pw']=0;
+    auth(function(st) {
+      switch(st) {
+        case 200:
+          //Success
+          $('#stageuser').css('display','none');
+          $('#stageopts').fadeIn();
+          localStorage['au']=1;
+          break;
+        case 400:
+          //Server Refused
+          triggerError('Instapaper Server refused to process request.');
+          break;
+        case 404:
+          //Internet Error
+          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
+          break;
+        case 403:
+          //Retrive Password
+          $('#stageuser').css('display','none');
+          $('#stagepass').fadeIn();
+          $('#pass').focus().select();
+          break;
+        case 500:
+          //Server Error
+          triggerError('The remote server encountered an error. Please try again later.');
+          break;
+        default:
+          triggerError('The remote server responded with the unexpected response code '+st);
+      }
+    });
+  });
+  
+  $('#formpass').submit(function(e) {
+    e.preventDefault();
+    $('#sendpass').attr('disabled',1);
+    localStorage['pw']=$('#pass').val();
+    auth(function(st) {
+      switch(st) {
+        case 200:
+          //Success
+          $('#stagepass').css('display','none');
+          $('#stageopts').fadeIn();
+          localStorage['au']=1;
+          break;
+        case 400:
+          //Server Refused
+          triggerError('Instapaper Server refused to process request.');
+          break;
+        case 404:
+          //Internet Error
+          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
+          break;
+        case 403:
+          //Bad Authentication
+          $('#stagepass').css('display','none');
+          $('#stagerestart').fadeIn();
+          break;
+        case 500:
+          //Server Error
+          triggerError('The remote server encountered an error. Please try again later.');
+          break;
+        default:
+          triggerError('The remote server responded with the unexpected response code '+st);
+      }
+    });
+  });
+  
+  $('#sendrestart,#clear').click(function() {
+    $('#stagerestart,#stageopts').css('display','none');
+    $('#stageuser').fadeIn();
+    $('#user').focus().select();
+    $('#senduser,#sendpass').attr('disabled',0);
+
+    localStorage['un']=0;
+    localStorage['pw']=0;
+    localStorage['au']=0;
+  });
+  
+  for(var i=1;i<=4;i++)
+  {
+    $('#opt'+i).attr('checked',eval(localStorage['opt'+i]));
+  }
+  $('#save').attr('disabled',1);
+  
+  $('.opt').change(function() {
+    $('#save').attr('disabled',0);
+    $('#save').val('Save');
+  });
+  
+  $('#save').click(function() {
+    for(var i=1;i<=4;i++)
+      localStorage['opt'+i]=$('#opt'+i).attr('checked');
+    
+    $('#save').attr('disabled',1);
+    $('#save').val('Saved');
+  });
+  
+  if(localStorage['au']!=1) {
+    //New User Screen
+    $('#stageuser').fadeIn();
+    $('#user').focus();
+  }
+  else {
+    //Verify Credentials
+    auth(function(st) {
+      switch(st) {
+        case 200:
+          //Success
+          setTimeout(function() {
+            $('#stageload').css('display','none');
+            $('#stageopts').fadeIn();
+          },500);
+          break;
+        case 400:
+          //Server Refused
+          triggerError('Instapaper Server refused to process request.');
+          break;
+        case 404:
+          //Internet Error
+          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
+          break;
+        case 403:
+          //Outdated Password
+          $('#stageload').css('display','none');
+          $('#stagerestart').fadeIn();
+          $('#user').val(localStorage['un']);
+          break;
+        case 500:
+          //Server Error
+          triggerError('The remote server encountered an error. Please try again later.');
+          break;
+        default:
+          triggerError('The remote server responded with the unexpected response code '+st);
+      }
+    });
+  }
+  
+  $('#stageload').fadeIn();
+});
+</script>
+<style type="text/css">
+* {
+  font-family:Sans-Serif;
+  font-size:1em;
+}
+.title {
+  font-size:1.5em;
+}
+a {
+  color:#069;
+}
+body {
+  background-image:url('background.png');
+  background-repeat:repeat-x;
+  background-color:#FFF;
+}
+.stage {
+  position:absolute;
+  top:75px;
+  left:20%;
+  width:60%;
+  height:500px;
+  display:none;
+  border:3px solid #000;
+  background-color:#EEE;
+  padding:15px;
+  z-index:500;
+}
+#error {
+  position:absolute;
+  top:75px;
+  left:20%;
+  width:60%;
+  height:500px;
+  display:none;
+  border:3px solid #000;
+  background-color:#DDD;
+  padding:15px;
+  z-index:1000;
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stageload">
+  Checking your Instapaper Credentials...
+</div>
+<div class="stage" id="stageuser">
+  Please enter your username below. If you have a password, you will be prompted for it.
+  <br /><br />
+  <form id="formuser">
+  <label for="user">Username:</label>
+  <input type="text" id="user" name="user" />
+  <br /><br />
+  <input type="submit" id="senduser" value="Continue" />
+  </form>
+</div>
+<div class="stage" id="stagepass">
+  The Instapaper server has requested a password. If you do not have one, return to the previous stage and check your username.
+  <br /><br />
+  <form id="formpass">
+  <label for="pass">Password:</label>
+  <input type="password" id="pass" name="pass" />
+  <br /><br />
+  <input type="submit" id="sendpass" value="Continue" />
+  </form>
+</div>
+<div class="stage" id="stagerestart">
+  The server has rejected your credentials.
+  <br /><br />
+  Click the button below to launch the authentication process.
+  <br /><br />
+  <input type="button" id="sendrestart" value="Lauch Authentication Process" />
+</div>
+<div class="stage" id="stageopts">
+  <div class="title">Instapaper Options</div>
+  <br /><b>Browser Button</b><br />
+  <input type="checkbox" id="opt1" class="opt" />
+  <label for="opt1">Open text view on save</label><br />
+
+  <input type="checkbox" id="opt2" class="opt" />
+  <label for="opt2">Close original tab on save</label><br />
+  
+  <br /><b>Context Menu</b><br />
+  <input type="checkbox" id="opt3" class="opt" />
+  <label for="opt3">Autoclose save notifications</label><br />
+  
+  <br /><b>Misc</b><br />
+  <input type="checkbox" id="opt4" class="opt" />
+  <label for="opt4">Do not open </label><a href="welcome.html" target="_blank">Extension Updated page</a> (Not Recommended)<br />
+  <div style="margin-left:25px;">The Extension Updated page conveys important messages</div>
+  <br /><input type="button" id="save" value="Saved" /><br /><br />
+  
+  <div class="title">Authentication</div><br />
+  If you wish to use Instapaper with a different account, click the button below.<br />
+  <input type="button" id="clear" value="Clear Authentication" /><br /><br />
+</div>
+<div id="error">
+  <div id="errorfield"></div>
+  <br /><br />
+  <input type="button" value="Restart" id="restart" />
+</div>
+</body>
+</html>
