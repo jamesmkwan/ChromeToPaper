@@ -117,10 +117,9 @@ $(document).ready(function() {
     localStorage['au']=0;
   });
   
-  for(var i=1;i<=4;i++)
-  {
-    $('#opt'+i).attr('checked',eval(localStorage['opt'+i]));
-  }
+  $('.opt').each(function() {
+    $(this).attr('checked',eval(localStorage[$(this).attr('id')]));
+  });
   $('#save').attr('disabled',1);
   
   $('.opt').change(function() {
@@ -129,8 +128,9 @@ $(document).ready(function() {
   });
   
   $('#save').click(function() {
-    for(var i=1;i<=4;i++)
-      localStorage['opt'+i]=$('#opt'+i).attr('checked');
+    $('.opt').each(function() {
+      localStorage[$(this).attr('id')]=$(this).attr('checked');
+    });
     
     $('#save').attr('disabled',1);
     $('#save').val('Saved');
@@ -255,23 +255,19 @@ body {
 <div class="stage" id="stageopts">
   <div class="title">Instapaper Options</div>
   <br /><b>Browser Button</b><br />
-  <input type="checkbox" id="opt1" class="opt" />
-  <label for="opt1">Open text view on save</label><br />
+  <input type="checkbox" id="opt_text" class="opt" />
+  <label for="opt_text">Open text view on save</label><br />
 
-  <input type="checkbox" id="opt2" class="opt" />
-  <label for="opt2">Close original tab on save</label><br />
+  <input type="checkbox" id="opt_close" class="opt" />
+  <label for="opt_close">Close original tab on save</label><br />
   
   <br /><b>Context Menu</b><br />
-  <input type="checkbox" id="opt3" class="opt" />
-  <label for="opt3">Autoclose save notifications</label><br />
+  <input type="checkbox" id="opt_notif" class="opt" />
+  <label for="opt_notif">Autoclose save notifications</label><br />
   
-  <br /><b>Misc</b><br />
-  <input type="checkbox" id="opt4" class="opt" />
-  <label for="opt4">Do not open </label><a href="welcome.html" target="_blank">Extension Updated page</a> (Not Recommended)<br />
-  <div style="margin-left:25px;">The Extension Updated page conveys important messages</div>
-  <br /><input type="button" id="save" value="Saved" /><br /><br />
+  <br /><input type="button" id="save" value="Saved" disabled="disabled" /><br />
   
-  <div class="title">Authentication</div><br />
+  <br /><div class="title">Authentication</div><br />
   If you wish to use Instapaper with a different account, click the button below.<br />
   <input type="button" id="clear" value="Clear Authentication" /><br /><br />
 </div>

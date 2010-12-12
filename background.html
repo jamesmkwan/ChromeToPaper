@@ -3,117 +3,129 @@
 <title>Instapaper</title>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
-var curver='2.1';
+var curver='2.1.1';
+var msg=0;
 if(localStorage['version']!=curver) {
-  localStorage['firstrun']=false;
-  localStorage['version']=curver;
+  msg=1;
   
-  if(!eval(localStorage['opt4'])) {
-    chrome.tabs.create({
-      url:"welcome.html",
-      selected:true
-    });
-  }
-}
-
-var badgeClear=0;
-function clearBadge() {
   chrome.browserAction.setBadgeText({
-    'text':''
-  });
-  clearInterval(badgeClear);
-}
-
-chrome.browserAction.onClicked.addListener(function(t) {
-  clearBadge(); badgeClear=setInterval(clearBadge,5000);
-  chrome.browserAction.setBadgeText({
-    'text':'...'
+    'text':'msg'
   });
   chrome.browserAction.setBadgeBackgroundColor({
     'color':[0,102,153,128]
   });
-  
-  chrome.tabs.getSelected(null,function(t) {
-    console.log(t.url);
-    if(t.url=='chrome://newtab/')
-    {
-      chrome.tabs.update(t.id,{
-        'url':'http://www.instapaper.com/'
-      });
-      
-      clearBadge(); badgeClear=setInterval(clearBadge,5000);
-      chrome.browserAction.setBadgeText({
-        'text':'Site'
-      });
-      chrome.browserAction.setBadgeBackgroundColor({
-        'color':[0,255,0,128]
-      });
-    }
-    else
-    {
-      $.ajax({
-        'method':'post',
-        'cache':0,
-        'url':'https://www.instapaper.com/api/add',
-        data:{
-          'username':localStorage['un'],
-          'password':localStorage['pw'],
-          'url':t.url
-        },
-        complete:function(c) {
-          clearBadge(); badgeClear=setInterval(clearBadge,5000);
+}
 
-          switch(c.status) {
-            case 201: //Success
-              chrome.browserAction.setBadgeText({
-                'text':'+1'
-              });
-              chrome.browserAction.setBadgeBackgroundColor({
-                'color':[0,255,0,200]
-              });
-              if(eval(localStorage['opt1']))
-              {
+var badgeClear=0;
+function clearBadge() {
+  clearInterval(badgeClear);
+  chrome.browserAction.setBadgeText({
+    'text':''
+  });
+}
+
+chrome.browserAction.onClicked.addListener(function(t) {
+  if(msg) {
+    msg=0;
+    localStorage['version']=curver;
+    chrome.tabs.create({
+      url:"welcome.html",
+      selected:true
+    });
+    clearBadge();
+  }
+  else
+  {
+    clearBadge(); badgeClear=setInterval(clearBadge,5000);
+    chrome.browserAction.setBadgeText({
+      'text':'...'
+    });
+    chrome.browserAction.setBadgeBackgroundColor({
+      'color':[0,102,153,128]
+    });
+
+    chrome.tabs.getSelected(null,function(t) {
+      console.log(t.url);
+      if(t.url=='chrome://newtab/')
+      {
+        chrome.tabs.update(t.id,{
+          'url':'http://www.instapaper.com/'
+        });
+
+        clearBadge(); badgeClear=setInterval(clearBadge,5000);
+        chrome.browserAction.setBadgeText({
+          'text':'Site'
+        });
+        chrome.browserAction.setBadgeBackgroundColor({
+          'color':[0,255,0,128]
+        });
+      }
+      else
+      {
+        $.ajax({
+          'method':'post',
+          'cache':0,
+          'url':'https://www.instapaper.com/api/add',
+          data:{
+            'username':localStorage['un'],
+            'password':localStorage['pw'],
+            'url':t.url
+          },
+          complete:function(c) {
+            clearBadge(); badgeClear=setInterval(clearBadge,5000);
+
+            switch(c.status) {
+              case 201: //Success
+                chrome.browserAction.setBadgeText({
+                  'text':'+1'
+                });
+                chrome.browserAction.setBadgeBackgroundColor({
+                  'color':[0,255,0,200]
+                });
+                if(eval(localStorage['opt_text']))
+                {
+                  chrome.tabs.create({
+                    index:t.index+1,
+                    url:'http://www.instapaper.com/text?u='+escape(t.url)
+                  });
+                }
+                if(eval(localStorage['opt_close']))
+                {
+                  chrome.tabs.remove(t.id);
+                }
+                break;
+              case 403: //Bad Authentication
+                chrome.browserAction.setBadgeText({
+                  'text':'auth'
+                });
+                chrome.browserAction.setBadgeBackgroundColor({
+                  'color':[0,102,153,128]
+                });
                 chrome.tabs.create({
                   index:t.index+1,
-                  url:'http://www.instapaper.com/text?u='+escape(t.url)
+                  url:'options.html'
                 });
-              }
-              if(eval(localStorage['opt2']))
-              {
-                chrome.tabs.remove(t.id);
-              }
-              break;
-            case 403: //Bad Authentication
-              chrome.browserAction.setBadgeText({
-                'text':'auth'
-              });
-              chrome.browserAction.setBadgeBackgroundColor({
-                'color':[0,102,153,128]
-              });
-              chrome.tabs.create({
-                index:t.index+1,
-                url:'options.html'
-              });
-              break;
-            //case 400: //Server Refused
-            //case 404: //Internet Error
-            //case 500: //Server Error
-            default:    //Unexpected Error
-              chrome.browserAction.setBadgeBackgroundColor({
-                'color':[255,0,0,200]
-              });
-              chrome.tabs.create({
-                index:t.index+1,
-                url:'http://www.instapaper.com/hello2?url='+escape(t.url)
-              });
-              chrome.browserAction.setBadgeText({
-                'text':c.status
-              });
+                break;
+              //case 400: //Server Refused
+              //case 404: //Internet Error
+              //case 500: //Server Error
+              default:    //Unexpected Error
+                chrome.browserAction.setBadgeBackgroundColor({
+                  'color':[255,0,0,200]
+                });
+                chrome.tabs.create({
+                  index:t.index+1,
+                  url:'http://www.instapaper.com/hello2?url='+escape(t.url)
+                });
+                chrome.browserAction.setBadgeText({
+                  'text':c.status
+                });
+            }
           }
-        }
-      });
-    }
-  });
+        });
+      }
+    });
+  }
 });
 
 chrome.contextMenus.create({
@@ -162,7 +174,7 @@ chrome.contextMenus.create({
           info.linkUrl
         );
         not.show();
-        if(eval(localStorage['opt3'])) {
+        if(eval(localStorage['opt_notif'])) {
           setTimeout(function() {
             not.cancel();
           },5000);
