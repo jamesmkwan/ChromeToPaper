@@ -1,0 +1,64 @@
+body {
+  margin:0px;
+  background-color:#F4F4F4;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+#body {
+  width:750px;
+  position:relative;
+  margin:0px auto 0px auto;
+  display:block;
+}
+
+#logo {
+  display:block;
+  font-size:40px;
+  font-weight:normal;
+  font-family:Georgia,'Times New Roman',Times,serif;
+  line-height:1.4;
+  border-bottom:2px solid #444;
+  margin:0px 0px 8px 0px;
+}
+
+#sub {
+  margin-bottom:20px;
+}
+
+#footer {
+  clear:both;
+  text-align:center;
+  font-size:12px;
+  color:#555;
+  border-top:1px solid #CCC;
+  padding-top:10px;
+  padding-bottom:20px;
+}
+
+#footer a {
+	text-decoration:none;
+}
+
+a {
+  color:#069;
+}
+
+p {
+	text-align:justified;
+}
+
+.stage,#error,#stat,#authpass {
+  display:none;
+}
+
+.posttitle {
+  display:block;
+	font-size:20px;
+	font-weight:normal;
+  font-family:Georgia,'Times New Roman',Times,serif;
+}
+
+#stageauth table {
+	border:0px;
+	padding:5px;
+}
