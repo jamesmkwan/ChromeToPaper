@@ -1,47 +1,49 @@
 <html>
 <head>
-<title>Instapaper</title>
-<style type="text/css">
-*{
-  font-family:Sans-Serif;
-  font-size:1em;
-}
-
-#title{
-  font-size:30px;
-  font-weight:bold;
-}
-
-a{
-  color:#069;
-}
-
-#icon{
-  float:left;
-  padding:5px;
-}
-
-div{
-  clear:both;
-}
-
-#news{
-  font-size:22px;
-  font-weight:bold;
-}
-</style>
+<title>Instapaper Message Center</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div style="width:500px; margin:auto;">
-<img id="icon" src="icon29.png" alt="Instapaper" />&nbsp;&nbsp;<span id="title">Instapaper Updated</span><br /><br />
-<div>Congratulations! You've installed the latest version of the Instapaper extension. The <a href="options.html">Options Page</a> has been streamlined to include the authentication process.</div>
-<br /><br /><div>
-<span id="news">News Center:</span>
-<br /><br />V2.1.1: Due to popular opinion, the Extension Updated Page (this page) no longer pops up immediately after an update. Instead, the Instapaper icon displays a "msg" badge, which will open the Instapaper Updated Page on click.
+<div id="body">
+<div id="header">
+  <h1 id="logo">Instapaper Extension</h1>
+  <div id="sub">Message Center</div>
+</div>
+<div id="auditorium">
+<div>Congratulations! You have the latest version of this Instapaper extension. If this is your first time using this extension on this computer, please visit the <a target="_blank" href="options.html">options page</a> to configure your experience.</div>
 
-<br /><br />V2.1: I'd like to aplogize for the quick updates. Version 2.0 was a major break through, but it was not without it's flaws. One user, 2010 politely informed me that there was no feedback that the extension button has been clicked until the page is saved to Instapaper. I realize that it is annoying to be left in the dark, so I've rushed out this update to resolve this issue. When a user presses the Instapaper button, a "..." appears on the badge with a neutral color to let the user know that it is working. Another user, Andre, has given me a good idea. Now that I've implemented it, on the New Tab Page of Chrome, when you click on the Instapaper button, it should bring you straight to the Instapaper site. This was a small change, but should improve the usability of this extension.
+<div class="post"><h2 class="posttitle">Notice</h2>
+A user has recently asked me to implement a keyboard shortcut to add a page to Instapaper. I have been avoiding the implementation of a keyboard shortcut for a while because of the way  extension keyboard shortcuts currently work in Google Chrome. In order for an extension to detect keyboard shortcuts, it must inject a userscript into each website a user visits. This userscript would monitor the keyboard. In short, <span style="color:#F00;">if I implement keyboard shortcuts, my extension will need to request for <i>"Your data on all websites"</i></span>. I'm still debating whether or not I should implement shortcuts, but I just wanted to give you guys a heads up.
+</div>
 
-<br /><br />V2.0: With this breakthrough version, the extension interface has been revolutionized. Instead of utilizing a Chrome popup bubble, the new extension utilizes color-coded badges to convey the status. Green means success, red means failure, and a grey-ish blue tint indicates a neutral state, neither good nor bad. With this new update, the Options page has been updated to accomodate a host of changes. Now that the login interface has been moved to the options page, a user's credentials are automatically rechecked every time the user accesses the options page. If an issue occurs with the credentials, the extension relaunches the authentication process.
+<div class="post"><h2 class="posttitle">V2.2:</h2>
+The extension user interface has been modified to provide a more unified experience. Pages such as the options page should look more user friendly and easier.
+</div>
+
+<div class="post">
+<h2 class="posttitle">V2.1.1</h2>
+Due to popular opinion, the Extension Updated Page (this page) no longer pops up immediately after an update. Instead, the Instapaper icon displays a "msg" badge, which will open the Instapaper Updated Page on click.
+</div>
+
+<div class="post">
+<h2 class="posttitle">V2.1</h2>
+Version 2.0 was a huge upgrade which left plenty of room for improvement. One user, 2010 politely informed me that there was no feedback when the extension button is clicked until it is added. Another user, Andre, suggested that clicking the Instapaper button on the new tab page opened the instapaper site. I've accounted for both of these suggestions in this update.
+</div>
+
+<div class="post">
+<h2 class="posttitle">V2.0</h2>
+With this breakthrough version, the extension interface has been completely recreated. The classic popup bubble has been replaced with Chrome-style extension badges. In addition, the options page has been heavily modified to accomodate the login.
+</div>
+</div><br /><br /><br />
+<div id="footer">
+  <a target="_blank" href="https://chrome.google.com/webstore/detail/bbmelbhnoccdkjiblgchdaofjdbombmh">Chrome Web Store Page</a>
+  &nbsp;&bull;&nbsp;
+  <a target="_blank" href="https://github.com/jamesmkwan/Instapaper">Extension Source Code</a>
+  &nbsp;&bull;&nbsp;
+  <a target="_blank" href="http://jamesmkwan.com/">Developer's Website</a>
+  <div style="margin-top:1em;">
+  This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+  &copy; 2010 James Kwan
 </div>
 </div>
 </body>

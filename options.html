@@ -5,11 +5,10 @@
 <script type="text/javascript">
 //triggerError: Creates an error popup containing the input message
 function triggerError(m) {
-  $('#error').css({
-    'display':'block',
-    'opacity':'1.0'
-  });
-  $('#errorfield').text(m);
+  $('#stat')
+    .text(m)
+    .css('color','#F00')
+    .slideDown();
 }
 
 //auth: Retrieves user/pass from localStorage and returns authentication status to input function
@@ -30,71 +29,45 @@ function auth(func) {
 }
 
 $(document).ready(function() {
-  $('#restart').click(function() {
-    location.href=location.href;
-  });
-  
-  $('#formuser').submit(function(e) {
+  var authstage=0;
+  $('#formauth').submit(function(e) {
     e.preventDefault();
-    $('#senduser').attr('disabled',1);
+    $('#sendauth').attr('disabled',1);
     localStorage['un']=$('#user').val();
-    localStorage['pw']=0;
-    auth(function(st) {
-      switch(st) {
-        case 200:
-          //Success
-          $('#stageuser').css('display','none');
-          $('#stageopts').fadeIn();
-          localStorage['au']=1;
-          break;
-        case 400:
-          //Server Refused
-          triggerError('Instapaper Server refused to process request.');
-          break;
-        case 404:
-          //Internet Error
-          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
-          break;
-        case 403:
-          //Retrive Password
-          $('#stageuser').css('display','none');
-          $('#stagepass').fadeIn();
-          $('#pass').focus().select();
-          break;
-        case 500:
-          //Server Error
-          triggerError('The remote server encountered an error. Please try again later.');
-          break;
-        default:
-          triggerError('The remote server responded with the unexpected response code '+st);
-      }
-    });
-  });
-  
-  $('#formpass').submit(function(e) {
-    e.preventDefault();
-    $('#sendpass').attr('disabled',1);
     localStorage['pw']=$('#pass').val();
+    $('#pass').val('');
     auth(function(st) {
       switch(st) {
         case 200:
           //Success
-          $('#stagepass').css('display','none');
-          $('#stageopts').fadeIn();
           localStorage['au']=1;
+          $('#stageauth').fadeOut(function() {
+            $('#stageopts').fadeIn();
+          });
           break;
         case 400:
           //Server Refused
-          triggerError('Instapaper Server refused to process request.');
+          triggerError('Instapaper Server refused to process request. Try again later');
           break;
         case 404:
           //Internet Error
-          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
+          triggerError('Could not connect to Instapaper. Please check your connection to www.instapaper.com');
           break;
         case 403:
-          //Bad Authentication
-          $('#stagepass').css('display','none');
-          $('#stagerestart').fadeIn();
+          //Fix Authentication
+          $('#sendauth').attr('disabled',0);
+          if(authstage) {
+            $('#msgauth')
+              .css('color','#F00')
+              .text('Please verify your credentials and try again');
+            $('#pass').focus();
+          }
+          else {
+            authstage=1;
+            $('#authpass').slideDown();
+            $('#msgauth').text('Now enter your password');
+            $('#pass').focus();
+          }
           break;
         case 500:
           //Server Error
@@ -106,11 +79,20 @@ $(document).ready(function() {
     });
   });
   
-  $('#sendrestart,#clear').click(function() {
-    $('#stagerestart,#stageopts').css('display','none');
-    $('#stageuser').fadeIn();
-    $('#user').focus().select();
-    $('#senduser,#sendpass').attr('disabled',0);
+  $('#clear').click(function(e) {
+    e.preventDefault();
+    
+    $('#msgauth')
+      .css('color','#000')
+      .text('Welcome! Please enter your username:');
+    $('#authpass').css('display','none');
+    authstage=0;
+    
+    $('#stageopts').fadeOut(function() {
+      $('#stageauth').fadeIn();
+      $('#user').val('').focus();
+    });
+    $('#sendauth').attr('disabled',0);
 
     localStorage['un']=0;
     localStorage['pw']=0;
@@ -136,21 +118,23 @@ $(document).ready(function() {
     $('#save').val('Saved');
   });
   
-  if(localStorage['au']!=1) {
+  if(localStorage['au']!='1') {
     //New User Screen
-    $('#stageuser').fadeIn();
+    $('#stageauth').show();
     $('#user').focus();
   }
   else {
     //Verify Credentials
+    $('#stat').slideDown();
     auth(function(st) {
       switch(st) {
         case 200:
           //Success
           setTimeout(function() {
-            $('#stageload').css('display','none');
-            $('#stageopts').fadeIn();
-          },500);
+            $('#stat').slideUp(function() {
+              $('#stageopts').fadeIn();
+            });
+          },1000);
           break;
         case 400:
           //Server Refused
@@ -175,106 +159,68 @@ $(document).ready(function() {
       }
     });
   }
-  
-  $('#stageload').fadeIn();
 });
 </script>
-<style type="text/css">
-* {
-  font-family:Sans-Serif;
-  font-size:1em;
-}
-.title {
-  font-size:1.5em;
-}
-a {
-  color:#069;
-}
-body {
-  background-image:url('background.png');
-  background-repeat:repeat-x;
-  background-color:#FFF;
-}
-.stage {
-  position:absolute;
-  top:75px;
-  left:20%;
-  width:60%;
-  height:400px;
-  display:none;
-  border:3px solid #000;
-  background-color:#EEE;
-  padding:15px;
-  z-index:500;
-}
-#error {
-  position:absolute;
-  top:75px;
-  left:20%;
-  width:60%;
-  height:400px;
-  display:none;
-  border:3px solid #000;
-  background-color:#DDD;
-  padding:15px;
-  z-index:1000;
-}
-</style>
+<link rel="stylesheet" href="styles.css" />
+
 </head>
 <body>
-<div class="stage" id="stageload">
-  Checking your Instapaper Credentials...
+<div id="body">
+<div id="header">
+  <h1 id="logo">Instapaper Extension</h1>
 </div>
-<div class="stage" id="stageuser">
-  Please enter your username below. If you have a password, you will be prompted for it.
-  <br /><br />
-  <form id="formuser">
-  <label for="user">Username:</label>
-  <input type="text" id="user" name="user" />
-  <br /><br />
-  <input type="submit" id="senduser" value="Continue" />
-  </form>
-</div>
-<div class="stage" id="stagepass">
-  The Instapaper server has requested a password. If you do not have one, return to the previous stage and check your username.
-  <br /><br />
-  <form id="formpass">
-  <label for="pass">Password:</label>
-  <input type="password" id="pass" name="pass" />
-  <br /><br />
-  <input type="submit" id="sendpass" value="Continue" />
-  </form>
-</div>
-<div class="stage" id="stagerestart">
-  The server has rejected your credentials.
-  <br /><br />
-  Click the button below to launch the authentication process.
-  <br /><br />
-  <input type="button" id="sendrestart" value="Lauch Authentication Process" />
-</div>
-<div class="stage" id="stageopts">
-  <div class="title">Instapaper Options</div>
-  <br /><b>Browser Button</b><br />
-  <input type="checkbox" id="opt_text" class="opt" />
-  <label for="opt_text">Open text view on save</label><br />
+<div id="auditorium">
+  <div id="stat">
+    Checking your Instapaper Credentials...
+  </div>
+  <div class="stage" id="stageauth">
+    <div id="msgauth">Welcome! Please enter your username:</div><br />
+    <form id="formauth">
+    
+    <table border="0" cellspacing="0" cellpadding="0">
+    <tr><td style="width:100px;"><label for="user">Username:</label></td>
+    <td><input type="text" id="user" name="user" /></td>
+    </tr></table>
+    
+    <div id="authpass"><table border="0" cellspacing="0" cellpadding="0">
+    <tr><td style="width:100px;"><label for="pass">Password:</label></td>
+    <td><input type="password" id="pass" name="pass" /></td>
+    </tr></table></div>
+    
+    <br /><input type="submit" id="sendauth" value="Continue" />
+    </form>
+  </div>
+  <div class="stage" id="stageopts">
+    <div>Instapaper Options</div>
+    <br /><b>Browser Button</b><br />
+    <input type="checkbox" id="opt_text" class="opt" />
+    <label for="opt_text">Open text view on save</label><br />
 
-  <input type="checkbox" id="opt_close" class="opt" />
-  <label for="opt_close">Close original tab on save</label><br />
-  
-  <br /><b>Context Menu</b><br />
-  <input type="checkbox" id="opt_notif" class="opt" />
-  <label for="opt_notif">Autoclose save notifications</label><br />
-  
-  <br /><input type="button" id="save" value="Saved" disabled="disabled" /><br />
-  
-  <br /><div class="title">Authentication</div><br />
-  If you wish to use Instapaper with a different account, click the button below.<br />
-  <input type="button" id="clear" value="Clear Authentication" />
+    <input type="checkbox" id="opt_close" class="opt" />
+    <label for="opt_close">Close original tab on save</label><br />
+
+    <br /><b>Context Menu</b><br />
+    <input type="checkbox" id="opt_notif" class="opt" />
+    <label for="opt_notif">Autoclose save notifications</label><br />
+
+    <br /><input type="button" id="save" value="Saved" disabled="disabled" /><br />
+
+    <br /><b>Authentication</b><br />
+    To switch Instapaper Accounts, you will need to <a href="#" id="clear">delete your credentials</a>.
+  </div>
+</div><br /><br /><br />
+<div id="footer">
+  <a target="_blank" href="welcome.html">Message Center</a>
+  &nbsp;&bull;&nbsp;
+  <a target="_blank" href="https://chrome.google.com/webstore/detail/bbmelbhnoccdkjiblgchdaofjdbombmh">Chrome Web Store Page</a>
+  &nbsp;&bull;&nbsp;
+  <a target="_blank" href="https://github.com/jamesmkwan/Instapaper">Extension Source Code</a>
+  &nbsp;&bull;&nbsp;
+  <a target="_blank" href="http://jamesmkwan.com/">Developer's Website</a>
+  <div style="margin-top:1em;">
+  This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+  &copy; 2010 James Kwan
 </div>
-<div id="error">
-  <div id="errorfield"></div>
-  <br /><br />
-  <input type="button" value="Restart" id="restart" />
 </div>
 </body>
 </html>

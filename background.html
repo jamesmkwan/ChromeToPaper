@@ -1,19 +1,31 @@
 <html>
 <head>
-<title>Instapaper</title>
+<title>Instapaper Extension</title>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
-var curver='2.1';
+var curver='2.2';
 var msg=0;
-if(localStorage['version']!=curver) {
-  msg=1;
-  
-  chrome.browserAction.setBadgeText({
-    'text':'msg'
+
+localStorage['firstrun']='yes';
+if(localStorage['firstrun']!='yes') {
+  localStorage['firstrun']='yes';
+  localStorage['version']=curver;
+  chrome.tabs.create({
+    url:"welcome.html",
+    selected:true
   });
-  chrome.browserAction.setBadgeBackgroundColor({
-    'color':[0,102,153,128]
-  });
+}
+else {
+  if(localStorage['version']!=curver) {
+    msg=1;
+
+    chrome.browserAction.setBadgeText({
+      'text':'msg'
+    });
+    chrome.browserAction.setBadgeBackgroundColor({
+      'color':[0,102,153,128]
+    });
+  }
 }
 
 var badgeClear=0;
