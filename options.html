@@ -7,10 +7,12 @@ var authstage=0;
 
 //triggerError: Creates an error popup containing the input message
 function triggerError(m) {
-  $('#stat')
-    .text(m)
-    .css('color','#F00')
-    .slideDown();
+  $('#stat').slideUp(function() {
+    $('#stat')
+      .text(m)
+      .css('color','#F00')
+      .slideDown();
+  });
 }
 
 //auth: Retrieves user/pass from localStorage and returns authentication status to input function
@@ -25,67 +27,62 @@ function auth(func) {
       'random':(new Date()).getTime()
     },
     complete:function(d) {
-      func(d.status);
+      switch(d.status) {
+        case 200:
+          //Success
+          localStorage['au']=1;
+          $('#authname').text(localStorage['un']);
+          $('#stat').slideUp(function() {
+            $('#stageauth').fadeOut(function() {
+              $('#stageopts,#userpane').fadeIn();
+            });
+          });
+          break;
+        case 400:
+          //Server Refused
+          triggerError('Instapaper Server refused to process request. Try again later');
+          break;
+        case 403:
+          //Fix Authentication
+          $('#stat').slideUp(function() {
+            $('#sendauth').attr('disabled',0);
+            if(authstage==1) {
+              $('#msgauth')
+                .css('color','#F00')
+                .text('Please verify your credentials and try again');
+              $('#pass').focus();
+            }
+            else if(authstage==2) {
+              $('#authpass').show();
+              $('#msgauth')
+                .css('color','#F00')
+                .text('Your Instapaper credentials are invalid');
+              $('#user').val(localStorage['un']);
+              $('#stageauth').fadeIn();
+              $('#pass').focus();
+              authstage=1;
+            }
+            else {
+              authstage=1;
+              $('#authpass').slideDown();
+              $('#msgauth').text('Now enter your password');
+              $('#pass').focus();
+            }
+          });
+          break;
+        case 404:
+          //Internet Error
+          triggerError('Could not connect to Instapaper. Please check your connection to www.instapaper.com');
+          break;
+        case 500:
+          //Server Error
+          triggerError('The remote server encountered an error. Please try again later.');
+          break;
+        default:
+          triggerError('The remote server responded with the unexpected response code '+st);
+      }
     }
   });
-}
-
-//apiauth: Handles the authentication
-function apiauth(st)
-{
-  $('#stat').slideUp(500);
-  setTimeout(function() {
-    switch(st) {
-      case 200:
-        //Success
-        localStorage['au']=1;
-        $('#authname').text(localStorage['un']);
-        $('#stageauth').fadeOut(function() {
-          $('#stageopts,#userpane').fadeIn();
-        });
-        break;
-      case 400:
-        //Server Refused
-        triggerError('Instapaper Server refused to process request. Try again later');
-        break;
-      case 403:
-        //Fix Authentication
-        $('#sendauth').attr('disabled',0);
-        if(authstage==1) {
-          $('#msgauth')
-            .css('color','#F00')
-            .text('Please verify your credentials and try again');
-          $('#pass').focus();
-        }
-        else if(authstage==2) {
-          $('#authpass').show();
-          $('#msgauth')
-            .css('color','#F00')
-            .text('Your Instapaper credentials are invalid');
-          $('#user').val(localStorage['un']);
-          $('#stageauth').fadeIn();
-          $('#pass').focus();
-          authstage=1;
-        }
-        else {
-          authstage=1;
-          $('#authpass').slideDown();
-          $('#msgauth').text('Now enter your password');
-          $('#pass').focus();
-        }
-        break;
-      case 404:
-        //Internet Error
-        triggerError('Could not connect to Instapaper. Please check your connection to www.instapaper.com');
-        break;
-      case 500:
-        //Server Error
-        triggerError('The remote server encountered an error. Please try again later.');
-        break;
-      default:
-        triggerError('The remote server responded with the unexpected response code '+st);
-    }
-  },750);
 }
 
 $(document).ready(function() {
@@ -95,7 +92,7 @@ $(document).ready(function() {
     localStorage['un']=$('#user').val();
     localStorage['pw']=$('#pass').val();
     $('#pass').val('');
-    auth(apiauth);
+    auth();
   });
   
   $('#clear').click(function(e) {
@@ -147,7 +144,8 @@ $(document).ready(function() {
     //Verify Credentials
     $('#stat').slideDown();
     authstage=2;
-    auth(apiauth);
+    setTimeout(auth,1000);
+    $('#stat').slideDown();
   }
 });
 </script>
