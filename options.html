@@ -3,6 +3,8 @@
 <title>Instapaper Options</title>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
+var authstage=0;
+
 //triggerError: Creates an error popup containing the input message
 function triggerError(m) {
   $('#stat')
@@ -28,66 +30,84 @@ function auth(func) {
   });
 }
 
+//apiauth: Handles the authentication
+function apiauth(st)
+{
+  $('#stat').slideUp(500);
+  setTimeout(function() {
+    switch(st) {
+      case 200:
+        //Success
+        localStorage['au']=1;
+        $('#authname').text(localStorage['un']);
+        $('#stageauth').fadeOut(function() {
+          $('#stageopts,#userpane').fadeIn();
+        });
+        break;
+      case 400:
+        //Server Refused
+        triggerError('Instapaper Server refused to process request. Try again later');
+        break;
+      case 403:
+        //Fix Authentication
+        $('#sendauth').attr('disabled',0);
+        if(authstage==1) {
+          $('#msgauth')
+            .css('color','#F00')
+            .text('Please verify your credentials and try again');
+          $('#pass').focus();
+        }
+        else if(authstage==2) {
+          $('#authpass').show();
+          $('#msgauth')
+            .css('color','#F00')
+            .text('Your Instapaper credentials are invalid');
+          $('#user').val(localStorage['un']);
+          $('#stageauth').fadeIn();
+          $('#pass').focus();
+          authstage=1;
+        }
+        else {
+          authstage=1;
+          $('#authpass').slideDown();
+          $('#msgauth').text('Now enter your password');
+          $('#pass').focus();
+        }
+        break;
+      case 404:
+        //Internet Error
+        triggerError('Could not connect to Instapaper. Please check your connection to www.instapaper.com');
+        break;
+      case 500:
+        //Server Error
+        triggerError('The remote server encountered an error. Please try again later.');
+        break;
+      default:
+        triggerError('The remote server responded with the unexpected response code '+st);
+    }
+  },750);
+}
+
 $(document).ready(function() {
-  var authstage=0;
   $('#formauth').submit(function(e) {
     e.preventDefault();
     $('#sendauth').attr('disabled',1);
     localStorage['un']=$('#user').val();
     localStorage['pw']=$('#pass').val();
     $('#pass').val('');
-    auth(function(st) {
-      switch(st) {
-        case 200:
-          //Success
-          localStorage['au']=1;
-          $('#stageauth').fadeOut(function() {
-            $('#stageopts').fadeIn();
-          });
-          break;
-        case 400:
-          //Server Refused
-          triggerError('Instapaper Server refused to process request. Try again later');
-          break;
-        case 404:
-          //Internet Error
-          triggerError('Could not connect to Instapaper. Please check your connection to www.instapaper.com');
-          break;
-        case 403:
-          //Fix Authentication
-          $('#sendauth').attr('disabled',0);
-          if(authstage) {
-            $('#msgauth')
-              .css('color','#F00')
-              .text('Please verify your credentials and try again');
-            $('#pass').focus();
-          }
-          else {
-            authstage=1;
-            $('#authpass').slideDown();
-            $('#msgauth').text('Now enter your password');
-            $('#pass').focus();
-          }
-          break;
-        case 500:
-          //Server Error
-          triggerError('The remote server encountered an error. Please try again later.');
-          break;
-        default:
-          triggerError('The remote server responded with the unexpected response code '+st);
-      }
-    });
+    auth(apiauth);
   });
   
   $('#clear').click(function(e) {
     e.preventDefault();
     
+    authstage=0;
     $('#msgauth')
       .css('color','#000')
       .text('Welcome! Please enter your username:');
     $('#authpass').css('display','none');
-    authstage=0;
     
+    $('#userpane').fadeOut();
     $('#stageopts').fadeOut(function() {
       $('#stageauth').fadeIn();
       $('#user').val('').focus();
@@ -126,38 +146,8 @@ $(document).ready(function() {
   else {
     //Verify Credentials
     $('#stat').slideDown();
-    auth(function(st) {
-      switch(st) {
-        case 200:
-          //Success
-          setTimeout(function() {
-            $('#stat').slideUp(function() {
-              $('#stageopts').fadeIn();
-            });
-          },1000);
-          break;
-        case 400:
-          //Server Refused
-          triggerError('Instapaper Server refused to process request.');
-          break;
-        case 404:
-          //Internet Error
-          triggerError('Could not connect to Instapaper. Please check your internet connectivity.');
-          break;
-        case 403:
-          //Outdated Password
-          $('#stageload').css('display','none');
-          $('#stagerestart').fadeIn();
-          $('#user').val(localStorage['un']);
-          break;
-        case 500:
-          //Server Error
-          triggerError('The remote server encountered an error. Please try again later.');
-          break;
-        default:
-          triggerError('The remote server responded with the unexpected response code '+st);
-      }
-    });
+    authstage=2;
+    auth(apiauth);
   }
 });
 </script>
@@ -167,11 +157,15 @@ $(document).ready(function() {
 <body>
 <div id="body">
 <div id="header">
+  <div id="userpane">
+  Hello, <span id="authname"></span>.
+  <a href="#" id="clear">Log out</a>
+  </div>
   <h1 id="logo">Instapaper Extension</h1>
 </div>
 <div id="auditorium">
   <div id="stat">
-    Checking your Instapaper Credentials...
+    Verifying your Instapaper credentials...
   </div>
   <div class="stage" id="stageauth">
     <div id="msgauth">Welcome! Please enter your username:</div><br />
@@ -204,9 +198,6 @@ $(document).ready(function() {
     <label for="opt_notif">Autoclose save notifications</label><br />
 
     <br /><input type="button" id="save" value="Saved" disabled="disabled" /><br />
-
-    <br /><b>Authentication</b><br />
-    To switch Instapaper Accounts, you will need to <a href="#" id="clear">delete your credentials</a>.
   </div>
 </div><br /><br /><br />
 <div id="footer">

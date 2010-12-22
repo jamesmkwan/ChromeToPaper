@@ -21,6 +21,14 @@ body {
   margin:0px 0px 8px 0px;
 }
 
+#userpane {
+	float:right;
+	margin-top:20px;
+	font-size:18px;
+	text-align:right;
+	display:none;
+}
+
 #sub {
   margin-bottom:20px;
 }
