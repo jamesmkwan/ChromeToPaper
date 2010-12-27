@@ -21,14 +21,6 @@ body {
   margin:0px 0px 8px 0px;
 }
 
-#userpane {
-	float:right;
-	margin-top:20px;
-	font-size:18px;
-	text-align:right;
-	display:none;
-}
-
 #sub {
   margin-bottom:20px;
 }
@@ -43,31 +35,10 @@ body {
   padding-bottom:20px;
 }
 
-#footer a, #extras a {
+#footer a {
 	text-decoration:none;
 }
 
 a {
   color:#069;
-}
-
-p {
-	text-align:justified;
-}
-
-.exp,.stage,#error,#stat,#authpass,#box_extras {
-  display:none;
-}
-
-.posttitle {
-  display:block;
-	font-size:20px;
-	font-weight:normal;
-  font-family:Georgia,'Times New Roman',Times,serif;
-}
-
-#extras td {
-	padding:5px;
-	border:1px solid #000;
-	width:700px;
 }

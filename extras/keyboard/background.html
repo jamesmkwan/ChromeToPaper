@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Instapaper Extras: Keyboard Shortcut</title>
+<script type="text/javascript">
+//Authorize Instapaper Extras
+var instapaper_id='bbmelbhnoccdkjiblgchdaofjdbombmh';
+var instapaper_extra={
+  'task':'authorizeExtra',
+  'name':'Keyboard Shortcut V1',
+  'link':chrome.extension.getURL('options.html')
+};
+var instapaper_auth=setInterval(function() {
+  chrome.extension.sendRequest(instapaper_id,instapaper_extra,function(x) {
+    if(x.stat=='1') {
+      clearInterval(instapaper_auth);
+    }
+  });
+},5000);
+
+//Default Keyboard Shortcut: Ctrl+I)
+if(localStorage.getItem('ks')==null) {
+  localStorage['ks']='10073';
+}
+
+//Handle Content Script
+chrome.extension.onRequest.addListener(function(a,b,c) {
+  c(localStorage['ks']);
+});
+</script>
+</head>
+<body>
+</body>
+</html>

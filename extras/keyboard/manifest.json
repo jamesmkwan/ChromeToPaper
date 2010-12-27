@@ -1,0 +1,24 @@
+{
+  "name": "Instapaper Extras: Keyboard Shortcut",
+  "version": "1.1",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+	"options_page":"options.html",
+	"background_page":"background.html",
+	"content_scripts": 
+	[
+		{
+			"matches":[
+			  "http://*/*",
+			  "https://*/*"
+			],
+			"js": [
+			  "keyboard.js"
+			],
+			"all_frames": true
+		}
+	]
+}

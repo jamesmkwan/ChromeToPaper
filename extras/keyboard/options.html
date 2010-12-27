@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>Instapaper Extras: Keyboard Shortcut</title>
+<script type="text/javascript">
+var watch=0;
+onload=function() {
+  document.addEventListener('keyup',btn_key);
+  document.getElementById('btn_key').value=key2txt(localStorage['ks']);
+  document.getElementById('btn_key').onclick=function() {
+    watch=1;
+    document.getElementById('btn_key').value='Press Key Combo';
+  }
+}
+
+function key2txt(a) {
+  return ''.concat(
+    (a.substr(0,1)=='1')?'Ctrl+':'',
+    (a.substr(1,1)=='1')?'Shift+':'',
+    (a.substr(2,1)=='1')?'Alt+':'',
+    String.fromCharCode(a.substr(3)));
+}
+
+function btn_key(e)
+{
+  if(watch) {
+    localStorage['ks']=''.concat(e.ctrlKey+0,e.shiftKey+0,e.altKey+0,e.which);
+    document.getElementById('btn_key').value=key2txt(localStorage['ks']);
+    watch=0;
+  }
+}
+</script>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="body">
+<div id="header">
+  <h1 id="logo">Instapaper Extras: Keyboard Shortcut</h1>
+  <div id="sub">
+</div>
+<div id="auditorium">
+This extra allows you to set a Keyboard Shortcut to add a page to Instapaper.
+<br /><br />
+
+Note: Not all keyboard shortcuts will work. Keyboard Shortcuts do not work on special protected pages where content scripts are prohibited. Changing your Keyboard Shortcut will not take effect on all pages until after they are reloaded<br /><br />
+
+Click the button below to change the Keyboard Shortcut.<br /><br />
+<input id="btn_key" type="button" value="..." />
+<span id="shortcut"></span>
+</div></div><br /><br /><br />
+<div id="footer">
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+  <input type="hidden" name="cmd" value="_s-xclick">
+  <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+  ">
+  <input type="image" src="donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+  <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+  </form>
+
+  <div style="margin-top:1em;">
+  Instapaper Extras are designed to augment the features of the <a href="https://chrome.google.com/webstore/detail/bbmelbhnoccdkjiblgchdaofjdbombmh">Instapaper Extension.</a><br /><br />
+  &copy; 2011 James Kwan
+</div>
+</div>
+</body>
+</html>
