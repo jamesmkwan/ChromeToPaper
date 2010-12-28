@@ -135,7 +135,7 @@ $(document).ready(function() {
     $('#save').val('Saved');
   });
   
-  if(localStorage.getItem(['sk'])!=null) {
+  if(localStorage.getItem(['ksk'])!=null) {
     $('#exp_ksk').css('display','block');
   }
   
@@ -149,14 +149,16 @@ $(document).ready(function() {
         .append($('<td />')
           .append($('<a />')
             .attr({
-              'href':x[i]['link'],
-              'target':'_blank'
+              'href':x[i]['link']
             })
             .text(x[i]['name'])
           )
         )
         .append($('<td />')
           .text(i)
+        )
+        .append($('<td />')
+          .text(x[i]['req'])
         )
         .appendTo('#extras');
     }
@@ -233,7 +235,7 @@ $(document).ready(function() {
     <div id="box_extras">
     <br /><b>Extras</b><br />
     <table id="extras" border="0" cellspacing="0" cellpadding="0">
-    <tr><td>Name</td><td>ID</td></tr>
+    <tr><td>Name</td><td>ID</td><td>Req</td></tr>
     </table>
     </div>
 

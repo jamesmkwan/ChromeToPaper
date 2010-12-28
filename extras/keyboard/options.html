@@ -1,32 +1,80 @@
 <html>
 <head>
-<title>Instapaper Extras: Keyboard Shortcut</title>
+<title>Instapaper Extras: Keyboard Shortcuts</title>
+<script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
-var watch=0;
-onload=function() {
-  document.addEventListener('keyup',btn_key);
-  document.getElementById('btn_key').value=key2txt(localStorage['ks']);
-  document.getElementById('btn_key').onclick=function() {
-    watch=1;
-    document.getElementById('btn_key').value='Press Key Combo';
-  }
-}
+var setting=0;
+var orig=0;
+var desc={
+  'saveToInstapaper':'Activating the keystroke for this action is equivalent to clicking the Instapaper Browser Button',
+  'openInstapaperList':'Opens http://www.instapaper.com/u in another tab'
+};
+$(function() {
+  //Watch for Keystrokes
+  $(document).bind('keyup',function(e) {
+    console.log(e.which);
+    if(setting) {
+      if(e.which==27) localStorage[setting]='Not binded';
+      else localStorage[setting]=''.concat(e.ctrlKey+0,e.shiftKey+0,e.altKey+0,e.which);
+      $('#'+setting+' .keybind').text(bind2text(localStorage[setting]));
+      setting=0;
+      orig=0;
+    }
+  });
+  
+  //Initialize Keybind Values
+  $('.keybind').each(function() {
+    $(this)
+      .css('cursor','pointer')
+      .text(bind2text(localStorage[$(this).parent().attr('id')]));
+  });
+  
+  $('.action')
+    .bind('mouseover',function(e) {
+      $('<div />')
+        .addClass('tooltip_'+$(e.target).parent().attr('id'))
+        .text(desc[$(e.target).parent().attr('id')])
+        .css({
+          'background-color':'#FFF',
+          'border':'1px solid #000',
+          'position':'absolute',
+          'top':e.pageY+5+'px',
+          'left':e.pageX+5+'px',
+          'min-width':'250px',
+          'padding':'10px'
+        })
+        .appendTo('body');
+      $(e.target).attr('title','');
+    })
+    .bind('mousemove',function(e) {
+      $('.tooltip_'+$(e.target).parent().attr('id')).css({
+        'top':e.pageY+5+'px',
+        'left':e.pageX+5+'px'
+      });   
+    })
+    .bind('mouseout',function(e) {
+      $('.tooltip_'+$(e.target).parent().attr('id')).remove();
+    });
 
-function key2txt(a) {
+  $('.action,.keybind').click(function() {
+    if(orig) {
+      $('#'+setting+' .keybind').text(orig);
+    }
+    setting=$(this).parent().attr('id');
+    orig=$('#'+setting+' .keybind').text();
+    $('#'+setting+' .keybind').text('Press Keystroke (Esc to unbind)');
+  });
+});
+
+
+//Function bind2text: converts a bind number to text
+function bind2text(a) {
+  if(a=='Not binded') return a;
   return ''.concat(
     (a.substr(0,1)=='1')?'Ctrl+':'',
     (a.substr(1,1)=='1')?'Shift+':'',
     (a.substr(2,1)=='1')?'Alt+':'',
     String.fromCharCode(a.substr(3)));
-}
-
-function btn_key(e)
-{
-  if(watch) {
-    localStorage['ks']=''.concat(e.ctrlKey+0,e.shiftKey+0,e.altKey+0,e.which);
-    document.getElementById('btn_key').value=key2txt(localStorage['ks']);
-    watch=0;
-  }
 }
 </script>
 <link rel="stylesheet" href="styles.css" />
@@ -34,18 +82,24 @@ function btn_key(e)
 <body>
 <div id="body">
 <div id="header">
-  <h1 id="logo">Instapaper Extras: Keyboard Shortcut</h1>
+  <h1 id="logo">Instapaper Extras: Keyboard Shortcuts</h1>
   <div id="sub">
 </div>
 <div id="auditorium">
-This extra allows you to set a Keyboard Shortcut to add a page to Instapaper.
+Click a keybind to modify it. Changes will not take effect on pages currently open. Note that not all keyboard shortcuts will work. In addition, some special pages prohibit custom keyboard shortcuts.
 <br /><br />
 
-Note: Not all keyboard shortcuts will work. Keyboard Shortcuts do not work on special protected pages where content scripts are prohibited. Changing your Keyboard Shortcut will not take effect on all pages until after they are reloaded<br /><br />
+<table id="shortcuts" border="0" cellspacing="0" cellpadding="0">
+<tr id="saveToInstapaper">
+  <td class="action">Save to Instapaper</td>
+  <td class="keybind"></td>
+</tr>
+<tr id="openInstapaperList">
+  <td class="action">Open Instapaper Reading List</td>
+  <td class="keybind"></td>
+</tr>
+</table>
 
-Click the button below to change the Keyboard Shortcut.<br /><br />
-<input id="btn_key" type="button" value="..." />
-<span id="shortcut"></span>
 </div></div><br /><br /><br />
 <div id="footer">
   <form action="https://www.paypal.com/cgi-bin/webscr" method="post">

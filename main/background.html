@@ -7,9 +7,10 @@ var curver='2.3';
 var msg=0;
 var x={ };
 
-localStorage['firstrun']='yes';
-if(localStorage['firstrun']!='yes') {
-  localStorage['firstrun']='yes';
+//Handle Message Center
+localStorage['firstrun']='no';
+if(localStorage['firstrun']!='no') {
+  localStorage['firstrun']='no';
   localStorage['version']=curver;
   chrome.tabs.create({
     url:"welcome.html",
@@ -30,6 +31,7 @@ else {
   }
 }
 
+//AutoClear Badge Clause
 var badgeClear=0;
 function clearBadge() {
   clearInterval(badgeClear);
@@ -109,7 +111,7 @@ chrome.extension.onRequest.addListener(function(req,sender,resp) {
         'color':[0,255,0,128]
       });
 
-      alert('Your KSK has been saved'+"\n"+req.sk);
+      alert('Your KSK has been saved'+"\n"+req.ksk);
       break;
     case 'getExtras':
       resp(x);
@@ -120,25 +122,45 @@ chrome.extension.onRequest.addListener(function(req,sender,resp) {
 });
 
 chrome.extension.onRequestExternal.addListener(function(req,sender,resp) {
-  switch(req.task) {
-    case 'authorizeExtra':
+  if(req.task=='authorizeExtra') {
+    x[sender.id]={
+      'name':req.name,
+      'link':req.link,
+      'req':(x[sender.id])?x[sender.id]['req']:0
+    };
+
+    console.log('Authorized Extra: '+req.name+' ('+sender.id+')');
+    console.log(x);
+    resp({
+      'stat':'1'
+    });
+  }
+  else {
+    if(x[sender.id]) {
+      x[sender.id]['req']++;
+    }
+    else {
       x[sender.id]={
-        'name':req.name,
-        'link':req.link
-      };
-    
-      console.log('Authorized Extra: '+req.name+' ('+sender.id+')');
-      console.log(x);
-      resp({
-        'stat':'1'
-      });
-      break;
-    case 'saveToInstapaper':
-      handleBrowserAction(sender.tab);
-      console.log('Received saveToInstapaper task from '+sender.id);
-      break;
-    default:
-      console.log('Unknown External Task: '+req.task);
+        'name':'Unspecified Extra',
+        'link':'#',
+        'req':1
+      }
+    }
+    switch(req.task) {
+      case 'saveToInstapaper':
+        x[sender.id]['req']++;
+        handleBrowserAction(sender.tab);
+        console.log('Received saveToInstapaper task from '+sender.id);
+        break;
+      case 'openInstapaperList':
+        chrome.tabs.create({
+          url:"http://www.instapaper.com/u",
+          selected:true
+        });
+        break;
+      default:
+        console.log('Unknown External Task: '+req.task);
+    }
   }
 });
 

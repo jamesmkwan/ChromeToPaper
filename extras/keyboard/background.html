@@ -1,31 +1,60 @@
 <html>
 <head>
-<title>Instapaper Extras: Keyboard Shortcut</title>
+<title>Instapaper Extras: Keyboard Shortcuts</title>
 <script type="text/javascript">
 //Authorize Instapaper Extras
-var instapaper_id='bbmelbhnoccdkjiblgchdaofjdbombmh';
+var instapaper_id=['bbmelbhnoccdkjiblgchdaofjdbombmh','pnmibbafhhlekndmlhoholkapknlejkk']
 var instapaper_extra={
   'task':'authorizeExtra',
-  'name':'Keyboard Shortcut V1',
+  'name':'Keyboard Shortcuts V1.3',
   'link':chrome.extension.getURL('options.html')
 };
-var instapaper_auth=setInterval(function() {
-  chrome.extension.sendRequest(instapaper_id,instapaper_extra,function(x) {
-    if(x.stat=='1') {
-      clearInterval(instapaper_auth);
-    }
-  });
-},5000);
-
-//Default Keyboard Shortcut: Ctrl+I)
-if(localStorage.getItem('ks')==null) {
-  localStorage['ks']='10073';
+for(var i=0;i<instapaper_id.length;i++) {
+  (function(instapaper_id) {
+    var tries=0;
+    var instapaper_auth=setInterval(function() {
+      tries++;
+      chrome.extension.sendRequest(instapaper_id,instapaper_extra,function(x) {
+        if(x && x.stat && x.stat=='1') {
+          clearInterval(instapaper_auth);
+        }
+      });
+      if(tries>12) {
+        console.warn('Could not contact '+instapaper_id);
+        clearInterval(instapaper_auth);
+      }
+    },5000);
+  })(instapaper_id[i]);
 }
+
+//Migrate old options
+if(localStorage.getItem('ks')!=null) {
+  localStorage['saveToInstapaper']=localStorage['ks'];
+  localStorage.removeItem('ks');
+}
+refreshSettings();
 
 //Handle Content Script
 chrome.extension.onRequest.addListener(function(a,b,c) {
-  c(localStorage['ks']);
+  c(refreshSettings());
 });
+
+//Function setDefault: Set localStorage key if not already set
+function refreshSettings() {
+  var a=['saveToInstapaper','openInstapaperList'];
+  var s={ };
+  s.d={ };
+  s.id=instapaper_id;
+  for(var i=0;i<a.length;i++) {
+    if(localStorage.getItem(a[i])==null) {
+      localStorage[a[i]]='Not binded';
+    }
+    else if(localStorage[a[i]]!='Not binded') {
+      s.d[a[i]]=localStorage[a[i]];
+    }
+  }
+  return s;
+}
 </script>
 </head>
 <body>
