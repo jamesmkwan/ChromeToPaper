@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Instapaper Extension</title>
+<title>ChromeToPaper Extension</title>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
 var curver='2.3';
@@ -43,7 +43,7 @@ function clearBadge() {
 chrome.browserAction.onClicked.addListener(handleBrowserAction);
 
 chrome.contextMenus.create({
-  'title':'Save to Instapaper',
+  'title':'ChromeToPaper',
   'contexts': [
     'link'
   ],

@@ -1,6 +1,6 @@
 {
-  "name": "Instapaper",
-  "version": "2.3.1",
+  "name": "ChromeToPaper",
+  "version": "2.3.2",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -15,7 +15,7 @@
     "https://www.instapaper.com/api/*"
   ],
   "browser_action": {
-    "default_title": "Instapaper",
+    "default_title": "ChromeToPaper",
     "default_icon": "icon19.png"
   },
   "options_page": "options.html"
