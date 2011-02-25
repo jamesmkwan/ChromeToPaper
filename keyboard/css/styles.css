@@ -21,8 +21,15 @@ body {
   margin:0px 0px 8px 0px;
 }
 
-#sub {
-  margin-bottom:20px;
+#tab_auth {
+	border-top:1px solid #666;
+}
+
+.tab {
+	padding:5px;
+	border-left:1px solid #666;
+	border-bottom:1px solid #666;
+	border-right:1px dashed #666;
 }
 
 #footer {
@@ -43,21 +50,9 @@ a {
   color:#069;
 }
 
-#shortcuts {
-	width:100%;
-}
-
-#shortcuts .action {
-	text-align:left;
-}
-
-#shortcuts .keybind {
-	text-align:right;
-	color:#069;
-}
-
-#shortcuts td {
-	padding:5px;
-  border-top:1px solid #000;
-	border-bottom:1px solid #000;
+.posttitle {
+  display:block;
+	font-size:20px;
+	font-weight:normal;
+  font-family:Georgia,'Times New Roman',Times,serif;
 }

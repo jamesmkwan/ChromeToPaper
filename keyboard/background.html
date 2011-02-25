@@ -1,32 +1,7 @@
 <html>
 <head>
-<title>ChromeToPaper Keyboard Shortcuts</title>
+<title>Chromapaper Keyboard Shortcuts</title>
 <script type="text/javascript">
-//Authorize
-var instapaper_id=['bbmelbhnoccdkjiblgchdaofjdbombmh','pnmibbafhhlekndmlhoholkapknlejkk']
-var instapaper_extra={
-  'task':'authorizeExtra',
-  'name':'Keyboard Shortcuts V1.3',
-  'link':chrome.extension.getURL('options.html')
-};
-for(var i=0;i<instapaper_id.length;i++) {
-  (function(instapaper_id) {
-    var tries=0;
-    var instapaper_auth=setInterval(function() {
-      tries++;
-      chrome.extension.sendRequest(instapaper_id,instapaper_extra,function(x) {
-        if(x && x.stat && x.stat=='1') {
-          clearInterval(instapaper_auth);
-        }
-      });
-      if(tries>12) {
-        console.warn('Could not contact '+instapaper_id);
-        clearInterval(instapaper_auth);
-      }
-    },5000);
-  })(instapaper_id[i]);
-}
-
 //Migrate old options
 if(localStorage.getItem('ks')!=null) {
   localStorage['saveToInstapaper']=localStorage['ks'];

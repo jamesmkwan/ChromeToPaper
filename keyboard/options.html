@@ -1,7 +1,12 @@
 <html>
 <head>
-<title>ChromeToPaper Keyboard Shortcuts</title>
-<script type="text/javascript" src="jquery.js"></script>
+<title>ChromeToPaper</title>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/family.js"></script>
+<link rel="stylesheet" href="lib/jquery.css" />
+<link rel="stylesheet" href="lib/styles.css" />
+
+<script type="text/javascript" src="options.js"></script>
 <script type="text/javascript">
 var setting=0;
 var orig=0;
@@ -77,12 +82,11 @@ function bind2text(a) {
     String.fromCharCode(a.substr(3)));
 }
 </script>
-<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <div id="body">
 <div id="header">
-  <h1 id="logo">ChromeToPaper Keyboard Shortcuts</h1>
+  <h1 id="logo">ChromeToPaper</h1>
   <div id="sub">
 </div>
 <div id="auditorium">
@@ -106,13 +110,11 @@ Click a keybind to modify it. Changes will not take effect on pages currently op
   <input type="hidden" name="cmd" value="_s-xclick">
   <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
   ">
-  <input type="image" src="donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+  <input type="image" src="lib/donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
   <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
   </form>
-
-  <div style="margin-top:1em;">
-  Instapaper Extras are designed to augment the features of the <a href="https://chrome.google.com/webstore/detail/bbmelbhnoccdkjiblgchdaofjdbombmh">Instapaper Extension.</a><br /><br />
-  &copy; 2011 James Kwan
+This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+&copy; 2011 James Kwan
 </div>
 </div>
 </body>

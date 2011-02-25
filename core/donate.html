@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>ChromeToPaper</title>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/family.js"></script>
+<link rel="stylesheet" href="lib/styles.css" />
+<script type="text/javascript">
+$(function() {
+  $('#paypal_donate').click(function(e) {
+    e.preventDefault();
+    $('#paypal_donate_form').submit();
+  })
+})
+</script>
+</head>
+<body>
+<div id="body">
+<div id="header">
+  <h1 id="logo">ChromeToPaper</h1>
+</div>
+<div id="auditorium">
+<div id="family_linker"></div>
+In my effort to make donations more accessible, I've created different ways to donate. Please choose a method that will work best for you.<br /><br />
+<div>
+  <div class="rcell rcell_click rcell_first">
+    <a target="_blank" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=http%3A%2F%2Fwww.amazon.com%2Fgp%2Fregistry%2Fwishlist%2F19SYRLT7JXVIS%3Fie%3DUTF8%26ref_%3Dcm_wl_rlist_go&tag=jamesmkwan.com-20&linkCode=ur2&camp=1789&creative=390957">
+      <div class="rcell_stat" style="color:#360">Recommended</div>
+      <div class="rcell_title">Amazon Wishlist</div>
+      <div class="rcell_desc">
+        Buy something from my Amazon Wishlist!
+      </div>
+    </a>
+  </div>
+  <div class="rcell rcell_click">
+    <a target="_blank" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=https%3A%2F%2Fwww.amazon.com%2Fgp%2Fgc%2Forder-email%3Fie%3DUTF8&tag=jamesmkwan.com-20&linkCode=ur2&camp=1789&creative=9325">
+      <div class="rcell_title">Amazon Gift Card</div>
+      <div class="rcell_desc">
+        Email a gift card to me at jamesmkwan.com [at] gmail.com
+      </div>
+    </a>
+  </div>
+  <div class="rcell rcell_click rcell_last">
+    <a target="_blank" href="paypal.html" id="paypal_donate">
+      <div class="rcell_title">Paypal</div>
+      <div class="rcell_desc">
+        I will happily accept Paypal donations, but please remember that Paypal takes a large cut. Other options provide better conversion rates
+      </div>
+      <div style="display:none">
+        <form id="paypal_donate_form" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+        ">
+        <input type="image" src="lib/donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+        </form>
+      </div>
+    </a>
+  </div>
+</div>
+</div><br /><br /><br />
+<div id="footer">
+  <a target="_blank" href="https://github.com/jamesmkwan/ChromeToPaper">Source Code</a>
+  <div style="margin-top:1em;">
+  This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+  &copy; 2011 James Kwan
+</div>
+</div>
+</body>
+</html>

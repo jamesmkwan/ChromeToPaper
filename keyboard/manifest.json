@@ -1,13 +1,16 @@
 {
-  "name": "ChromeToPaper Keyboard Shortcuts",
-  "version": "1.4",
+  "name": "Chromapaper Keyboard Shortcuts",
+  "version": "1.5",
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "lib/icons/default/icon16.png",
+    "48": "lib/icons/default/icon48.png",
+    "128":"lib/icons/default/icon128.png"
   },
-	"options_page":"options.html",
-	"background_page":"background.html",
+	"background_page": "background.html",
+	"options_page": "options.html",
+	"permissions": [
+		"management"
+	],
 	"content_scripts": 
 	[
 		{
