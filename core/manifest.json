@@ -1,6 +1,6 @@
 {
   "name": "ChromeToPaper",
-  "version": "2.5",
+  "version": "2.5.3",
   "description": "Adds Instapaper support to Google Chrome",
   "icons": {
     "16": "lib/icons/default/icon16.png",

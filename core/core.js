@@ -6,7 +6,8 @@ var core= {
   'badge': {
     'timer':0
   },
-  'msg':0
+  'msg':0,
+  'ctx':false
 };
 
 //setDefaults: set default options if they are unset
@@ -20,6 +21,9 @@ core.setDefaults=function() {
 core.setDefault=function(key,val) {
   if(localStorage.getItem(key)==null) {
     localStorage[key]=val;
+    if(key=='opt_contextmenu') {
+      core.reloadContextMenu();
+    }
   }
 }
 
@@ -111,20 +115,32 @@ core.click=function(t) {
     if(localStorage['opt_feedback']=='badge') {
       core.badge.setDefault([0,102,153,128],'...');
     }
-    core.saveToInstapaper(t.url);
+    core.saveToInstapaper(t.url,t);
   }
 };
 
 //saveToInstapaper: Sends request
-core.saveToInstapaper=function(url) {
+core.saveToInstapaper=function(url,t) {
   apiRemote.sendAdd(url,function(status) {
-    core.handleStatus(status);
+    core.handleStatus(status,t);
   });
 }
 
 //handleStatus: Outputs status
-core.handleStatus=function(status) {
+core.handleStatus=function(status,t) {
   if(status==201) {
+    if(t!=null) {
+      if(eval(localStorage['opt_close'])) {
+        chrome.tabs.remove(t.id);
+      }
+      if(eval(localStorage['opt_text'])) {
+        chrome.tabs.create({
+          'index':t.index,
+          'url':'http://www.instapaper.com/text?u='+escape(t.url)
+        });
+      }
+    }
+    
     core.resp('success',[
       'Success!',
       '+1'
@@ -154,6 +170,15 @@ core.handleStatus=function(status) {
 //hook: Adds listeners
 core.hook=function() {
   chrome.browserAction.onClicked.addListener(core.click);
+  chrome.extension.onRequest.addListener(function(data,from,callback) {
+    switch(data.task) {
+      case 'reloadContextMenu':
+        core.reloadContextMenu(data.stat);
+        break;
+      default:
+        console.warn('Unknown task: '+data.task);
+    }
+  });
   chrome.extension.onRequestExternal.addListener(
     function(data,from,callback) {
       if(family[sender.id]) {
@@ -178,8 +203,18 @@ core.hook=function() {
       }
     }
   );
-  if(localStorage['opt_contextoption']) {
-    chrome.contextMenus.create({
+  
+  core.reloadContextMenu();
+}
+
+core.reloadContextMenu=function(data) {
+  if(core.ctx) {
+    chrome.contextMenus.remove(core.ctx);
+    console.log('Removing ctx '+core.ctx);
+    core.ctx=false;
+  }
+  if(eval(localStorage['opt_contextmenu'])) {
+    core.ctx=chrome.contextMenus.create({
       'title':'ChromeToPaper',
       'contexts': [
         'link'
@@ -188,6 +223,7 @@ core.hook=function() {
         core.saveToInstapaper(info.linkUrl);
       }
     });
+    console.log('Adding ctx'+core.ctx);
   }
 }
 

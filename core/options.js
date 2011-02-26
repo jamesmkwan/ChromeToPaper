@@ -294,6 +294,13 @@ opts.hook=function() {
         blok.click(function() {
           localStorage[id]=!eval(localStorage[id]);
           updateToggle();
+          
+          if(id=='opt_contextmenu') {
+            chrome.extension.sendRequest({
+              'task':'reloadContextMenu',
+              'stat':localStorage[id]
+            });
+          }
         });
         break;
       case 'radio':
