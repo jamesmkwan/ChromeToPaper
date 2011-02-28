@@ -7,114 +7,42 @@
 <link rel="stylesheet" href="lib/styles.css" />
 
 <script type="text/javascript" src="options.js"></script>
-<script type="text/javascript">
-var setting=0;
-var orig=0;
-var desc={
-  'saveToInstapaper':'Activating the keystroke for this action is equivalent to clicking the Browser Button',
-  'openInstapaperList':'Opens http://www.instapaper.com/u in another tab'
-};
-$(function() {
-  //Watch for Keystrokes
-  $(document).bind('keyup',function(e) {
-    console.log(e.which);
-    if(setting) {
-      if(e.which==27) localStorage[setting]='Not binded';
-      else localStorage[setting]=''.concat(e.ctrlKey+0,e.shiftKey+0,e.altKey+0,e.which);
-      $('#'+setting+' .keybind').text(bind2text(localStorage[setting]));
-      setting=0;
-      orig=0;
-    }
-  });
-  
-  //Initialize Keybind Values
-  $('.keybind').each(function() {
-    $(this)
-      .css('cursor','pointer')
-      .text(bind2text(localStorage[$(this).parent().attr('id')]));
-  });
-  
-  $('.action')
-    .bind('mouseover',function(e) {
-      $('<div />')
-        .addClass('tooltip_'+$(e.target).parent().attr('id'))
-        .text(desc[$(e.target).parent().attr('id')])
-        .css({
-          'background-color':'#FFF',
-          'border':'1px solid #000',
-          'position':'absolute',
-          'top':e.pageY+5+'px',
-          'left':e.pageX+5+'px',
-          'min-width':'250px',
-          'padding':'10px'
-        })
-        .appendTo('body');
-      $(e.target).attr('title','');
-    })
-    .bind('mousemove',function(e) {
-      $('.tooltip_'+$(e.target).parent().attr('id')).css({
-        'top':e.pageY+5+'px',
-        'left':e.pageX+5+'px'
-      });   
-    })
-    .bind('mouseout',function(e) {
-      $('.tooltip_'+$(e.target).parent().attr('id')).remove();
-    });
-
-  $('.action,.keybind').click(function() {
-    if(orig) {
-      $('#'+setting+' .keybind').text(orig);
-    }
-    setting=$(this).parent().attr('id');
-    orig=$('#'+setting+' .keybind').text();
-    $('#'+setting+' .keybind').text('Press Keystroke (Esc to unbind)');
-  });
-});
-
-
-//Function bind2text: converts a bind number to text
-function bind2text(a) {
-  if(a=='Not binded') return a;
-  return ''.concat(
-    (a.substr(0,1)=='1')?'Ctrl+':'',
-    (a.substr(1,1)=='1')?'Shift+':'',
-    (a.substr(2,1)=='1')?'Alt+':'',
-    String.fromCharCode(a.substr(3)));
-}
-</script>
 </head>
 <body>
 <div id="body">
 <div id="header">
   <h1 id="logo">ChromeToPaper</h1>
-  <div id="sub">
 </div>
 <div id="auditorium">
-Click a keybind to modify it. Changes will not take effect on pages currently open. Note that not all keyboard shortcuts will work. In addition, some special pages prohibit custom keyboard shortcuts.
+<div id="family_linker"></div>
+Below are the customizable keyboard shortcuts for ChromeToPaper. Click a setting to change it. Please note that the changes do not take affect on currently open tabs.<br /><br />
+<div id="options_list"></div>
 <br /><br />
-
-<table id="shortcuts" border="0" cellspacing="0" cellpadding="0">
-<tr id="saveToInstapaper">
-  <td class="action">ChromeToPaper</td>
-  <td class="keybind"></td>
-</tr>
-<tr id="openInstapaperList">
-  <td class="action">Open Reading List</td>
-  <td class="keybind"></td>
-</tr>
-</table>
-
-</div></div><br /><br /><br />
+<div>
+  <div class="rcell rcell_click rcell_first">
+    <a href="lib/donate.html">
+      <div class="rcell_stat"><img src="lib/heart.png" alt="<3" /></div>
+      <div class="rcell_title">Donate</div>
+      <div class="rcell_desc">
+        If you like this extension, please consider donating. I have worked hard on this extension, and I would love to receive some support.
+      </div>
+    </a>
+  </div>
+  <div class="rcell rcell_click rcell_last">
+    <a href="http://www.jamesmkwan.com/">
+      <div class="rcell_title">jamesmkwan.com</div>
+      <div class="rcell_desc">
+        Visit the developer's website
+      </div>
+    </a>
+  </div>
+</div>
+</div><br /><br /><br />
 <div id="footer">
-  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_s-xclick">
-  <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-  ">
-  <input type="image" src="lib/donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-  <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
-  </form>
-This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
-&copy; 2011 James Kwan
+  <a target="_blank" href="https://github.com/jamesmkwan/ChromeToPaper">Source Code</a>
+  <div style="margin-top:1em;">
+  This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+  &copy; 2011 James Kwan
 </div>
 </div>
 </body>

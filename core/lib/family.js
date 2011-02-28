@@ -16,7 +16,8 @@ var family= {
     'url':'https://chrome.google.com/webstore/detail/lpjpjcgbkjefppoahpegfajifjdmcblb',
     'options_page':'options.html'
   },
-  'anphalfoaaegidcbognealancgeanllm': {
+  //'anphalfoaaegidcbognealancgeanllm': {
+  'ffmheheimbbioecdjfnnmgjfpfgihbej': {
     'name':'ChromeToPaper: Keyboard Shortcuts',
     'short':'Shortcuts',
     'description':'Adds customizable keybord shortcuts for various tasks.',

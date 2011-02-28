@@ -27,7 +27,7 @@ var options={
   },
   'opt_contextmenu': {
     'name':'Save links via Context Menu',
-    'description':'Add an option to the context menu that allows you to save links (takes effect on restart)',
+    'description':'Add an option to the context menu that allows you to save links',
     'behavior':'toggle'
   },
   'opt_notiftimeout': {

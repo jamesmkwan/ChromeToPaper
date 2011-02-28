@@ -1,11 +1,17 @@
 <html>
 <head>
 <title>Chromapaper Keyboard Shortcuts</title>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/family.js"></script>
 <script type="text/javascript">
 //Migrate old options
-if(localStorage.getItem('ks')!=null) {
-  localStorage['saveToInstapaper']=localStorage['ks'];
-  localStorage.removeItem('ks');
+if(localStorage.getItem('saveToInstapaper')!=null) {
+  localStorage['opt_saveToInstapaper']=localStorage['saveToInstapaper'];
+  localStorage.removeItem('saveToInstapaper');
+}
+if(localStorage.getItem('openInstapaperList')!=null) {
+  localStorage['opt_openInstapaperList']=localStorage['openInstapaperList'];
+  localStorage.removeItem('openInstapaperList');
 }
 refreshSettings();
 
@@ -16,7 +22,7 @@ chrome.extension.onRequest.addListener(function(a,b,c) {
 
 //Function setDefault: Set localStorage key if not already set
 function refreshSettings() {
-  var a=['saveToInstapaper','openInstapaperList'];
+  var a=['opt_saveToInstapaper','opt_openInstapaperList'];
   var s={ };
   s.d={ };
   s.id=instapaper_id;

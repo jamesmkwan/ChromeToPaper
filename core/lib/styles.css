@@ -67,6 +67,8 @@ a {
 }
 
 .rcell_title {
+  font-family:Georgia,'Times New Roman',Times,serif;
+  font-size:16px;
   font-weight:bold;
 }
 
