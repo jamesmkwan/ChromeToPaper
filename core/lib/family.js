@@ -49,7 +49,7 @@ familyLinker.hook=function() {
   $('#family_linker').append($('<a />')
     .attr('id','linker_manage')
     .text('Manager')
-    .attr('href','family.html')
+    .attr('href','lib/family.html')
   );
         
   

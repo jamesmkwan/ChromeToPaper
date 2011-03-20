@@ -3,12 +3,12 @@
 var options={
   'au': {
     'name':'Account Credentials',
-    'description':'Your credentials for instapaper.com are used to access the API',
+    'desc':'Your credentials for instapaper.com are used to access the API',
     'behavior':'auth'
   },
   'opt_feedback': {
     'name':'Feedback Method',
-    'description':'Choose your primary preference for feedback. Please note that not all feedback mechanisms are customizable.',
+    'desc':'Choose your primary preference for feedback. Please note that not all feedback mechanisms are customizable.',
     'behavior':'radio',
     'opts': {
       'notif':'HTML5 Notifications',
@@ -17,28 +17,34 @@ var options={
   },
   'opt_text': {
     'name':'Text View on Save',
-    'description':'Automatically switch to text view when you save the page (excludes context menu)',
+    'desc':'Automatically switch to text view when you save the page (excludes context menu)',
     'behavior':'toggle'
   },
   'opt_close': {
     'name':'Close Tab on Save',
-    'description':'Automatically close tabs that you save to your reading list (excludes context menu)',
+    'desc':'Automatically close tabs that you save to your reading list (excludes context menu)',
     'behavior':'toggle'
   },
   'opt_contextmenu': {
     'name':'Save links via Context Menu',
-    'description':'Add an option to the context menu that allows you to save links',
+    'desc':'Add an option to the context menu that allows you to save links',
     'behavior':'toggle'
   },
   'opt_notiftimeout': {
     'name':'Notifications Self-Close Timeout',
-    'description':'Set the time in seconds before the HTML5 notification popups automatically close. Setting this to zero will stop notifications from automatically closing.',
+    'desc':'Set the time in seconds before the HTML5 notification popups automatically close. Setting this to zero will stop notifications from automatically closing.',
     'behavior':'slider',
     'opts': {
       'range_min':0,
       'range_max':10,
       'range_inc':1
     }
+  },
+  'opt_icon': {
+    'name':'Icon',
+    'desc':'Use a different icon for the browser button.',
+    'behavior':'icon',
+    'url':'icons.html'
   }
 }
 
@@ -61,10 +67,11 @@ opts.hook=function() {
       )
       .append($('<div />')
         .addClass('rcell_desc')
-        .text(this.description)
+        .text(this.desc)
       )
     );
     
+    var tis=this;
     var blok=$('#rcell_'+id);
     var stat=$('#rcell_'+id+' .rcell_stat');
     switch(this.behavior) {
@@ -382,12 +389,18 @@ opts.hook=function() {
             blok.children('.uislider').slideUp();
           });
         break;
+      case 'icon':
+        stat.text(icons[localStorage[id]].name);
+        blok.click(function() {
+          location.href=tis.url;
+        })
+        break;
       default:
         $('#rcell_'+id+' .rcell_stat').text('');
     }
   });
   
-  $('#options_list .rcell').first().addClass('rcell_first');    
+  $('#options_list .rcell').first().addClass('rcell_first');
   $('#options_list .rcell').last().addClass('rcell_last');
 }
 

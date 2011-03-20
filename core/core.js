@@ -15,6 +15,7 @@ core.setDefaults=function() {
   core.setDefault('opt_feedback','badge');
   core.setDefault('opt_contextmenu','true');
   core.setDefault('opt_notiftimeout','5');
+  core.setDefault('opt_icon','default');
 }
 
 //setDefault: set option if unset
@@ -175,6 +176,9 @@ core.hook=function() {
       case 'reloadContextMenu':
         core.reloadContextMenu(data.stat);
         break;
+      case 'reloadIcon':
+        core.reloadIcon();
+        break;
       default:
         console.warn('Unknown task: '+data.task);
     }
@@ -205,6 +209,7 @@ core.hook=function() {
   );
   
   core.reloadContextMenu();
+  core.reloadIcon();
 }
 
 core.reloadContextMenu=function(data) {
@@ -215,7 +220,7 @@ core.reloadContextMenu=function(data) {
   }
   if(eval(localStorage['opt_contextmenu'])) {
     core.ctx=chrome.contextMenus.create({
-      'title':'ChromeToPaper',
+      'title':'Save with ChromeToPaper',
       'contexts': [
         'link'
       ],
@@ -225,6 +230,12 @@ core.reloadContextMenu=function(data) {
     });
     console.log('Adding ctx'+core.ctx);
   }
+}
+
+core.reloadIcon=function() {
+  chrome.browserAction.setIcon({
+    'path':'icons/'+localStorage['opt_icon']+'/icon19.png'
+  });
 }
 
 core.hook();
