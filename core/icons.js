@@ -9,6 +9,10 @@ var icons= {
     'desc':'Old icon for those who preferred it',
     'prev':'icon128.png'
   },
+  'transparent':{
+    'name':'Transparent',
+    'prev':'icon128.png'
+  },
   'green':{
     'name':'Green (user submitted)',
     'desc':'User did not request for any acknowledgement',
