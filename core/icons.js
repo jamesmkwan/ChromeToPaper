@@ -17,5 +17,10 @@ var icons= {
     'name':'Green (user submitted)',
     'desc':'User did not request for any acknowledgement',
     'prev':'icon128.png'
+  },
+  'blue':{
+    'name':'Blue (user submitted)',
+    'desc':'Created by Andre Griffin',
+    'prev':'icon128.png'
   }
 };
