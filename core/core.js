@@ -185,11 +185,11 @@ core.hook=function() {
   });
   chrome.extension.onRequestExternal.addListener(
     function(data,from,callback) {
-      if(family[sender.id]) {
-        if(core.log[sender.id]) {
-          core.log[sender.id]++;
+      if(family[from.id]) {
+        if(core.log[from.id]) {
+          core.log[from.id]++;
         } else {
-          core.log[sender.id]=1;
+          core.log[from.id]=1;
         }
 
         switch(data.task) {
@@ -203,7 +203,7 @@ core.hook=function() {
             console.warn('Unknown External Task: '+data.task);
         }
       } else {
-        console.warn('Unrecognized Extension ID: '+sender.id);
+        console.warn('Unrecognized Extension ID: '+from.id);
       }
     }
   );
