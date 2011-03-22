@@ -390,7 +390,11 @@ opts.hook=function() {
           });
         break;
       case 'icon':
-        stat.text(icons[localStorage[id]].name);
+        if(icons[localStorage[id]]) {
+          stat.text(icons[localStorage[id]].name);
+        } else {
+          stat.text('Unknown');
+        }
         blok.click(function() {
           location.href=tis.url;
         })
