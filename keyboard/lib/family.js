@@ -16,9 +16,8 @@ var family= {
     'url':'https://chrome.google.com/webstore/detail/lpjpjcgbkjefppoahpegfajifjdmcblb',
     'options_page':'options.html'
   },
-  //'anphalfoaaegidcbognealancgeanllm': {
-  'ffmheheimbbioecdjfnnmgjfpfgihbej': {
-    'name':'ChromeToPaper: Keyboard Shortcuts',
+  'anphalfoaaegidcbognealancgeanllm': {
+    'name':'ChromeToPaper Keyboard Shortcuts',
     'short':'Shortcuts',
     'description':'Adds customizable keybord shortcuts for various tasks.',
     'url':'https://chrome.google.com/webstore/detail/anphalfoaaegidcbognealancgeanllm',
@@ -32,19 +31,21 @@ var familyLinker={
 //Hook: Establishes DOM and Event Listeners
 familyLinker.hook=function() {
   $.each(family,function(id) {
-    $('#family_linker')
-      .append($('<a />')
-        .addClass('linker')
-        .text(this.short)
-        .attr({
-          'id':'linker_'+id,
-          'href':'chrome-extension://'+id+'/'+this.options_page
-        })
-      )
-      .append($('<span />')
-        .addClass('linker_divider')
-        .html(' &bull; ')
-      );
+    if(this.short!='hide') {
+      $('#family_linker')
+        .append($('<a />')
+          .addClass('linker')
+          .text(this.short)
+          .attr({
+            'id':'linker_'+id,
+            'href':'chrome-extension://'+id+'/'+this.options_page
+          })
+        )
+        .append($('<span />')
+          .addClass('linker_divider')
+          .html(' &bull; ')
+        );
+    }
   });
   $('#family_linker').append($('<a />')
     .attr('id','linker_manage')
