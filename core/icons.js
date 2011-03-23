@@ -11,6 +11,7 @@ var icons= {
   },
   'transparent':{
     'name':'Transparent',
+    'desc':'Same design as default, with the background removed',
     'prev':'icon128.png'
   },
   'green':{
