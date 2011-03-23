@@ -18,9 +18,9 @@ var icons= {
     'desc':'User did not request for any acknowledgement',
     'prev':'icon128.png'
   },
-  'blue':{
-    'name':'Blue (user submitted)',
-    'desc':'Created by Andre Griffin',
+  'minimalist':{
+    'name':'Minimalist (user submitted)',
+    'desc':'Created by andregriffin.com',
     'prev':'icon128.png'
   }
 };
