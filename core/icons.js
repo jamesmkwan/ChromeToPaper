@@ -14,6 +14,11 @@ var icons= {
     'desc':'Same design as default, with the background removed',
     'prev':'icon128.png'
   },
+  'transparent_large':{
+    'name':'Transparent (Large)',
+    'desc':'An enlarged version of the transparent icon',
+    'prev':'icon128.png'
+  },
   'green':{
     'name':'Green (user submitted)',
     'desc':'User did not request for any acknowledgement',
