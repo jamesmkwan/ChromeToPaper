@@ -16,11 +16,11 @@ var family= {
     'url':'https://chrome.google.com/webstore/detail/lpjpjcgbkjefppoahpegfajifjdmcblb',
     'options_page':'options.html'
   },
-  'anphalfoaaegidcbognealancgeanllm': {
-    'name':'ChromeToPaper Keyboard Shortcuts',
-    'short':'Shortcuts',
-    'description':'Adds customizable keybord shortcuts for various tasks.',
-    'url':'https://chrome.google.com/webstore/detail/anphalfoaaegidcbognealancgeanllm',
+  'anphalfoaaegidcbognealancgeanllm':{
+    'name':'ChromeToPaper Shortcuts',
+    'short':'hide',
+    'description':'Adds Keyboard Shortcuts to ChromeToPaper',
+    'url':'#',
     'options_page':'options.html'
   }
 };
@@ -50,7 +50,7 @@ familyLinker.hook=function() {
   $('#family_linker').append($('<a />')
     .attr('id','linker_manage')
     .text('Manager')
-    .attr('href','lib/family.html')
+    .attr('href','/lib/family.html')
   );
         
   
