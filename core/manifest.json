@@ -1,6 +1,6 @@
 {
   "name": "ChromeToPaper",
-  "version": "2.5.4.4",
+  "version": "2.5.5",
   "description": "Adds Instapaper support to Google Chrome",
   "icons": {
     "16": "lib/icon16.png",
@@ -12,15 +12,14 @@
     "default_icon": "lib/icon19.png"
   },
   "background_page": "background.html",
+  "minimum_chrome_version":"5.0.316.0",
   "options_page": "options.html",
   "permissions": [
     "tabs",
     "contextMenus",
     "notifications",
     "management",
-    "http://www.instapaper.com/api/*",
-    "https://www.instapaper.com/api/*",
-    "http://instapaper.com/api/*",
-    "https://instapaper.com/api/*"
-    ]
+    "http://*/*",
+    "https://*/*"
+  ]
 }
