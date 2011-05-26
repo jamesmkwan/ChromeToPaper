@@ -18,9 +18,9 @@ var family= {
   },
   'anphalfoaaegidcbognealancgeanllm':{
     'name':'ChromeToPaper Shortcuts',
-    'short':'hide',
+    'short':'Shortcuts',
     'description':'Adds Keyboard Shortcuts to ChromeToPaper',
-    'url':'#',
+    'url':'https://chrome.google.com/webstore/detail/anphalfoaaegidcbognealancgeanllm',
     'options_page':'options.html'
   }
 };

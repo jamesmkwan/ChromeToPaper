@@ -12,6 +12,7 @@ var core= {
 
 //setDefaults: set default options if they are unset
 core.setDefaults=function() {
+  core.setDefault('opt_onclick','simple');
   core.setDefault('opt_feedback','badge');
   core.setDefault('opt_contextmenu','true');
   core.setDefault('opt_notiftimeout','5');
@@ -112,16 +113,19 @@ core.click=function(t) {
       'url':'http://instapaper.com/',
       selected:true
     });
+  } if(localStorage['opt_onclick']=='popup') {
   } else {
     if(localStorage['opt_feedback']=='badge') {
       core.badge.setDefault([0,102,153,128],'...');
     }
     core.saveToInstapaper(t.url,t);
   }
-};
+}
 
 //saveToInstapaper: Sends request
 core.saveToInstapaper=function(url,t) {
+  console.log(url);
+  console.log(t);
   apiRemote.sendAdd(url,function(status) {
     core.handleStatus(status,t);
   });
@@ -185,6 +189,7 @@ core.hook=function() {
   });
   chrome.extension.onRequestExternal.addListener(
     function(data,from,callback) {
+      console.log(data);
       if(family[from.id]) {
         if(core.log[from.id]) {
           core.log[from.id]++;

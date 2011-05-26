@@ -2,9 +2,9 @@
   "name": "Chromapaper Keyboard Shortcuts",
   "version": "1.5",
   "icons": {
-    "16": "lib/icons/default/icon16.png",
-    "48": "lib/icons/default/icon48.png",
-    "128":"lib/icons/default/icon128.png"
+    "16": "lib/icon16.png",
+    "48": "lib/icon48.png",
+    "128":"lib/icon128.png"
   },
 	"background_page": "background.html",
 	"options_page": "options.html",
