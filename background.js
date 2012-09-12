@@ -108,17 +108,17 @@ $(function() {
 					}
 				}
 				handleStatus(status);
-			});
+			}, tab.title);
 		}
 	};
 	chrome.browserAction.onClicked.addListener(handleClick);
 	
 	// saveToInstapaper: calls function from apiRemote
-	var saveToInstapaper = function(url, callback) {
+	var saveToInstapaper = function(url, callback, title) {
 		//Create indicator to show that the request is being resolved
 		badgeSetTemp([0, 102, 153, 128], '...');
 		
-		sendAdd(url, callback);
+		sendAdd(url, title, callback);
 	};
 	
 	// handleStatus: displays proper badge feedback

@@ -11,30 +11,38 @@ function sendAuth(callback, username, password) {
     'method': 'post',
     'cache': 0,
     'url': 'https://www.instapaper.com/api/authenticate',
-    data: {
+    'data': {
       'username': username,
       'password': password,
       'random': (new Date()).getTime()
     },
-    complete: function(xml, text) {
+    'complete': function(xml, text) {
       callback(xml.status);
     }
   });
 }
 
 // sendAdd: API add URL, returns status code
-function sendAdd(url, callback) {
+function sendAdd(url, title, callback) {
+  var data = {
+    'username': localStorage['un'],
+    'password': localStorage['pw'],
+    'random': (new Date()).getTime(),
+    'url': url
+  };
+
+  if(title) {
+    $.extend(data, {
+      'title': title
+    });
+  }
+
   $.ajax({
     'method': 'post',
     'cache': 0,
     'url': 'https://www.instapaper.com/api/add',
-    data: {
-      'username': localStorage['un'],
-      'password': localStorage['pw'],
-      'random': (new Date()).getTime(),
-      'url': url
-    },
-    complete: function(xml, text) {
+    'data': data,
+    'complete': function(xml, text) {
       callback(xml.status);
     }
   });
