@@ -1,0 +1,184 @@
+/* Layout Styles */
+
+body {
+  margin: 0px;
+  background-color: #F4F4F4;
+  font-size: 16px;
+  font-family:  Helvetica, Arial, sans-serif;
+}
+
+#body {
+  width: 750px;
+  position: relative;
+  margin: 0px auto 0px auto;
+  display: block;
+}
+
+#logo {
+  display: block;
+  font-size: 40px;
+  font-weight: normal;
+  font-family: Georgia,'Times New Roman',Times,serif;
+  line-height: 1.4;
+  border-bottom: 2px solid #444;
+  margin: 0px 0px 8px 0px;
+}
+
+#userpanel, #loginpanel {
+  float: right;
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: right;
+  display:none;
+}
+
+#usergreeted {
+  font-weight: bold;
+}
+
+#footer {
+  clear: both;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+  border-top: 1px solid #CCC;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+#footer a {
+	text-decoration: none;
+}
+
+a {
+  color: #00C;
+}
+
+/* Mini-Blog Styles */
+.postversion {
+  float: right;
+  color: #666;
+  font-size: 10pt;
+}
+
+.post {
+  background-color: #F8F8F8;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #E6E6E6;
+  text-align: justify;
+  margin-bottom: 25px;
+}
+
+.posttitle {
+  display: block;
+	font-size: 20px;
+	font-weight: normal;
+  font-family: Georgia,'Times New Roman',Times,serif;
+  padding-bottom: 9px;
+}
+
+/* Rcell Styles */
+
+.rcell {
+  cursor: pointer;
+  background-color: #F8F8F8;
+  border-top: 1px solid #DDD;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  padding: 15px;
+}
+
+.rcell a {
+  color: #000;
+  text-decoration: none;
+}
+
+.rcell_title {
+  font-family: Georgia,'Times New Roman',Times,serif;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rcell_stat {
+  float: right;
+  padding: 12px;
+  clear: right;
+}
+
+.rcell:hover {
+  background-color: #EEE;
+}
+
+.rcell:active {
+  background-color: #DDD;
+}
+
+.rcell_desc {
+  clear: both;
+  margin-top: 25px;
+}
+
+.rcell_first {
+  margin-top: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.rcell_last {
+  border-bottom: 1px solid #DDD;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.rcell_selected {
+  background-color: #DDD!important;
+}
+
+#iblock .rcell {
+  min-height: 103px;
+  background-repeat: no-repeat;
+}
+
+#iblock .rcell_title, #iblock .rcell_desc {
+  padding-left: 128px;
+}
+
+/* NavBar Styles */
+#navbar {
+  margin-bottom: 20px;
+  clear: both;
+  font-weight: normal;
+  font-size: 1.5em;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  color: #CCC;
+  min-height: 20px;
+}
+
+#navbar a {
+  color: #00C;
+  text-decoration: none;
+}
+
+.navbar_selected {
+  font-weight: bold;
+}
+
+.navbar_selected a {
+  color: #000!important;
+}
+
+#auwarn {
+  color: #F00;
+  display: none;
+}
+
+/* Stage Styles */
+
+.stage {
+  display: none;
+}
+
+.stage_selected {
+  display: block;
+}

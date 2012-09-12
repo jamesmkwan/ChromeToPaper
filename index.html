@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ChromeToPaper</title>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/jquery.ext.js"></script>
+<script type="text/javascript" src="lib/sha1.js"></script>
+<link rel="stylesheet" href="lib/jquery.css" />
+
+<script type="text/javascript" src="apiRemote.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<link rel="stylesheet" href="index.css" />
+</head>
+<body>
+<div id="body">
+  <div id="header">
+    <div id="userpanel">Hello, <span id="usergreeted"></span>. <a href="#account" id="logout">Log out</a></div>
+    <div id="loginpanel"><a href="#account" id="login">Log In</a></div>
+    <h1 id="logo">ChromeToPaper</h1>
+  </div>
+  <div id="auditorium">
+    <div id="navbar">
+      <span class="navbar_selected" id="slide_welcome"><a href="#welcome">Welcome</a> &bull;</span>
+      <span id="slide_behavior"><a href="#behavior">Behavior</a> &bull;</span>
+      <span id="slide_appearance"><a href="#appearance">Appearance</a> &bull;</span>
+      <span id="slide_hotkeys"><a href="#hotkeys">Hotkeys</a> &bull;</span>
+      <span id="slide_misc"><a href="#misc">Misc</a></span>
+    </div>
+    
+    <div id="auwarn">Before you can start saving pages, you need to login (top right).<br /><br /></div>
+
+    <div class="stage stage_selected" id="stage_welcome">
+      Welcome! This page displays when a new message is available. Click the links above to customize the extension.<br /><br />
+      <div class="post">
+      <div class="postversion">September 12, 2012</div>
+      <div class="posttitle">V2.6</div>
+        Updated a lot of the code to comply with Chrome's stricter security standards. Interface has been revamped; it should be more intuitive now. If something isn't working right, please let me know, and I will try to fix it as soon as possible. <br /><br />Keyboard shortcuts are now natively supported. You can set them up under the hotkeys section. If you try to enable them, you should be prompted for additional permissions. The old ChromeToPaper Keyboard Shortcuts extension is now unneeded.
+      </div>
+
+      <div class="post">
+      <div class="postversion">March 20, 2011</div>
+      <div class="posttitle">V2.5.4</div>
+        You can now choose an icon via the appearance section! Whatever icon you choose should immediately appear in the action bar (let me know if it does not). There's currently no way to choose an icon from your own computer (due to permissions), but I am completely open to user-submitted icons.
+      </div>
+    </div>
+    
+    <div class="stage" id="stage_account">
+      <div id="loginmsg" style="text-align:center;">&nbsp;</div><br>
+      <form id="form_account" style="width:300px; margin:0px auto 0px auto; text-align:center;">
+        <div style="margin-bottom:20px;">
+          <label for="username" style="display:block;">Email address:</label>
+          <input type="text" name="username" id="username" />
+          <div style="font-size:11px; color:#777;">(or username, if not an email)</div>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label for="password" style="display: block;">Password:</label>
+          <input type="password" name="password" id="password" />
+          <div style="font-size:11px;color:#777;">(if you have one)</div>
+          <div style="margin-top: 1em;"><input id="btn_login" type="submit" value="Log in" /></div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="stage" id="stage_behavior">
+      <div class="rblock">
+        <div class="rcell rcell_first option" id="option_textviewonsave">
+          <div class="rcell_stat">Enable</div>
+          <div class="rcell_title">Text View on Save</div>
+          <div class="rcell_desc">Automatically open text view when you save the page (excludes context menu)</div>
+        </div>
+        <div class="rcell rcell_last option" id="option_closetabonsave">
+          <div class="rcell_stat">Enable</div>
+          <div class="rcell_title">Close Tab on Save</div>
+          <div class="rcell_desc">Automatically close the tab when you save the page (excludes context menu)</div>
+        </div>
+      </div>
+      <div class="rblock">
+        <div class="rcell rcell_first rcell_last option" id="option_savelinksviacontextmenu">
+          <div class="rcell_stat">Enable</div>
+          <div class="rcell_title">Save links via Context Menu</div>
+          <div class="rcell_desc">Add an option to the context menu to save links.</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="stage" id="stage_appearance">
+      <div class="rblock" id="iblock">
+        <div class="rcell rcell_first" id="icon_default" style="background-image: url('icons/default/icon128.png')">
+          <div class="rcell_title">Original</div>
+          <div class="rcell_desc">The default icon</div>
+        </div>
+        <div class="rcell" id="icon_chrome" style="background-image: url('icons/chrome/icon128.png')">
+          <div class="rcell_title">Chrome</div>
+          <div class="rcell_desc">Designed to blend in with the rest of Chrome</div>
+        </div>
+        <div class="rcell rcell_last" id="icon_green" style="background-image: url('icons/green/icon128.png')">
+          <div class="rcell_title">Green</div>
+          <div class="rcell_desc">A green design that is easy to notice</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="stage" id="stage_hotkeys">
+      <div class="rblock">
+        Any changes made here will not take effect on opened pages until they are reloaded.
+        <div class="rcell rcell_first rcell_last option" id="option_hotkeys">
+          <div class="rcell_stat">Enable</div>
+          <div class="rcell_title">Enable Hotkeys</div>
+          <div class="rcell_desc">Enabling hotkeys may create a prompt asking for additional permissions.</div>
+        </div>
+      </div><br /><br />
+      Make sure you enable hotkeys before you trying to use them.
+      <div class="rblock">
+        <div class="rcell rcell_first option" id="option_hotkeysavetoinstapaper">
+          <div class="rcell_stat">Unset</div>
+          <div class="rcell_title">Save to Instapaper</div>
+          <div class="rcell_desc"></div>
+        </div>
+        <div class="rcell rcell_last option" id="option_hotkeyreadinglist">
+          <div class="rcell_stat">Unset</div>
+          <div class="rcell_title">Open Reading List</div>
+          <div class="rcell_desc"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="stage" id="stage_misc">
+      Like my extension? <br />
+      <div class="rcell rcell_first">
+        <a target="_blank" href="http://www.amazon.com/gp/redirect.html?ie=UTF8&location=https%3A%2F%2Fwww.amazon.com%2Fgp%2Fgc%2Forder-email%3Fie%3DUTF8&tag=jamesmkwan.com-20&linkCode=ur2&camp=1789&creative=9325">
+          <div class="rcell_title">Amazon Gift Card</div>
+          <div class="rcell_desc">
+            Email a gift card to me at jamesmkwan.com [at] gmail.com
+          </div>
+        </a>
+      </div>
+      <div class="rcell rcell_last">
+        <a target="_blank" href="lib/paypal.html" id="paypal_donate">
+          <div class="rcell_title">Paypal</div>
+          <div class="rcell_desc">
+            Paypal takes a decent cut out of the donations, so please consider Amazon Gift Cards.
+          </div>
+          <div style="display:none">
+            <form id="paypal_donate_form" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+            ">
+            <input type="image" src="lib/donate.png" border="0" name="submit" alt="Paypal">
+            </form>
+          </div>
+        </a>
+      </div>
+      
+      <br /><br />
+      Relevant links<br />
+      <div class="rcell rcell_first">
+        <a target="_blank" href="https://chrome.google.com/webstore/detail/bbmelbhnoccdkjiblgchdaofjdbombmh">
+          <div class="rcell_title">Chrome Web Store Page</div>
+          <div class="rcell_desc">
+            Visit the Chrome Web Store Page to comment and rate this extension.
+          </div>
+        </a>
+      </div>
+      <div class="rcell rcell_last">
+        <a target="_blank" href="https://github.com/jamesmkwan/ChromeToPaper">
+          <div class="rcell_title">Source Code</div>
+          <div class="rcell_desc">
+            View the source code and create support tickets on GitHub.
+          </div>
+        </a>
+      </div>
+    </div>
+  </div><br /><br /><br />
+  <div id="footer">
+    <div style="margin-top:1em;">
+      This extension uses the Instapaper API but is not endorsed or certified by Instapaper. <br /><br />
+      &copy; 2012 James Kwan
+    </div>
+  </div>
+</div>
+</body>
+</html>
