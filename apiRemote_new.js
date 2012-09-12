@@ -24,12 +24,10 @@ apiRemote.urlGetFolders = apiRemote.url+'folders/list';
 apiRemote.urlSendAuth = apiRemote.url+'account/verify_credentials';
 apiRemote.urlSendAdd = apiRemote.url+'booksmarks/add';
 
-/* The following keys are unique and designated for my extension.
-   If you are a developer, please do not use the same keys as me.
-   Rather, request your own API keys from the Instapaper website.
+/* Put API Keys here
 */
-apiRemote.oauth_key = 'zdEvMxorRXEoucdaPsBDpVsozLAus8zE80e6Dki1cXSYLY2PWQ';
-apiRemote.oauth_secret = 'KX05kaIuQ3yFoj2cEmwsd65RIov0W07qPePwP2AA3Ht9bvMhfk&';
+apiRemote.oauth_key = '';
+apiRemote.oauth_secret = '';
 
 /* Here is a chart to explain how the functions are structured:
   +-------------+
