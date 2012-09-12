@@ -3,18 +3,6 @@
 $(function() {
 	var version = '2.6';
 	
-	// If first time running extension, immediately open welcome page
-	if(localStorage['firstrun'] != 'no') {
-		localStorage['firstrun'] = 'no';
-		localStorage['version'] = version;
-		chrome.tabs.create({
-			'url': 'index.html'
-		});
-	} else if(localStorage['version'] != version) {
-		// Display 'msg' badge if updated welcome center
-		badgeSet([0,102,153,128], 'msg');
-	}
-	
 	// setDefault: set option in localStorage if unset
 	var setDefault = function(key, val) {
 		if(localStorage.getItem(key) == null) {
@@ -175,4 +163,16 @@ $(function() {
 		// Clear the message after 5s
 		setInterval(badgeClear, 5000);
 	};
+
+	// If first time running extension, immediately open welcome page
+	if(localStorage['firstrun'] != 'no') {
+		localStorage['firstrun'] = 'no';
+		localStorage['version'] = version;
+		chrome.tabs.create({
+			'url': 'index.html'
+		});
+	} else if(localStorage['version'] != version) {
+		// Display 'msg' badge if updated welcome center
+		badgeSet([0,102,153,128], 'msg');
+	}
 })
