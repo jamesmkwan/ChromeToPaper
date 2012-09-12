@@ -218,6 +218,7 @@ $(function() {
 				if(localStorage['opt_' + name].substr(2, 1) == '1') {
 					keysequence = 'Alt + ' + keysequence;
 				}
+				keysequence = keysequence + ' (' + localStorage['opt_' + name].substr(3) + ')';
 				
 				$('#option_' + name + ' .rcell_stat')
 					.text(keysequence)
