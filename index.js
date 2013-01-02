@@ -146,6 +146,7 @@ $(function() {
 	handleEnableOption('closetabonsave');
 	handleEnableOption('savelinksviacontextmenu', reloadSettings);
 	handleEnableOption('openinstapaperfromcontextmenu', reloadSettings);
+	handleEnableOption('doubleclicktoopeninstapaper');
 	
 	// Appearance
 	$('#icon_' + localStorage['opt_icon']).addClass('rcell_selected');
