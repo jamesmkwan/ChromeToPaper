@@ -25,10 +25,21 @@ $(function() {
 		chrome.contextMenus.removeAll(function() {
 			if(localStorage['opt_savelinksviacontextmenu'] == 'true') {
 				chrome.contextMenus.create({
-					'title': 'Save with ChromeToPaper', 
+					'title': 'Save with ChromeToPaper',
 					'contexts': ['link'],
 					'onclick': function(info, tab) {
 						saveToInstapaper(info.linkUrl, handleStatus);
+					}
+				})
+			}
+			
+			if(localStorage['opt_openinstapaperfromcontextmenu'] == 'true') {
+				chrome.contextMenus.create({
+					'title': 'Open Instapaper',
+					'onclick': function(info, tab) {
+						chrome.tabs.update(tab.id, {
+							'url': 'http://instapaper.com/'
+						});
 					}
 				})
 			}

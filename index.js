@@ -145,6 +145,7 @@ $(function() {
 	handleEnableOption('textviewonsave');
 	handleEnableOption('closetabonsave');
 	handleEnableOption('savelinksviacontextmenu', reloadSettings);
+	handleEnableOption('openinstapaperfromcontextmenu', reloadSettings);
 	
 	// Appearance
 	$('#icon_' + localStorage['opt_icon']).addClass('rcell_selected');
