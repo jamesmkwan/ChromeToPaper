@@ -161,7 +161,7 @@ $(function() {
 		badgeSet(color, text);
 		
 		// Clear the message after 5s
-		setInterval(badgeClear, 5000);
+		badgeClearTimer = setInterval(badgeClear, 5000);
 	};
 
 	// If first time running extension, immediately open welcome page
