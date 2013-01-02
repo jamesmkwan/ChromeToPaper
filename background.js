@@ -25,10 +25,21 @@ $(function() {
 		chrome.contextMenus.removeAll(function() {
 			if(localStorage['opt_savelinksviacontextmenu'] == 'true') {
 				chrome.contextMenus.create({
-					'title': 'Save with ChromeToPaper', 
+					'title': 'Save with ChromeToPaper',
 					'contexts': ['link'],
 					'onclick': function(info, tab) {
 						saveToInstapaper(info.linkUrl, handleStatus);
+					}
+				})
+			}
+			
+			if(localStorage['opt_openinstapaperfromcontextmenu'] == 'true') {
+				chrome.contextMenus.create({
+					'title': 'Open Instapaper',
+					'onclick': function(info, tab) {
+						chrome.tabs.update(tab.id, {
+							'url': 'http://instapaper.com/'
+						});
 					}
 				})
 			}
@@ -77,21 +88,13 @@ $(function() {
 			});
 		}
 	});
+	
+	var doubleClickTimer = 0;
+	var doubleClickCount = 0;
 
 	// handleClick: Listener for browser action
 	var handleClick = function(tab) {
-		if(localStorage['version'] != version) { // Open welcome notice if ChromeToPaper is updated
-			localStorage['version'] = version;
-			badgeClear();
-			chrome.tabs.create({
-				'index': tab.index,
-				'url':  'index.html'
-			});
-		} else if(tab.url == 'chrome://newtab/') { // Open Instapaper website if on new tab page
-			chrome.tabs.update(tab.id, {
-				'url': 'http://instapaper.com/'
-			});
-		} else { // Otherwise save page to Instapaper
+		var handleSave = function() {
 			saveToInstapaper(tab.url, function(status) {
 				if(status == 201) {
 					// Close tab if option is set
@@ -109,6 +112,42 @@ $(function() {
 				}
 				handleStatus(status);
 			}, tab.title);
+		}
+		if(localStorage['version'] != version) { // Open welcome notice if ChromeToPaper is updated
+			localStorage['version'] = version;
+			badgeClear();
+			chrome.tabs.create({
+				'index': tab.index,
+				'url':  'index.html'
+			});
+		} else if(tab.url == 'chrome://newtab/') { // Open Instapaper website if on new tab page
+			chrome.tabs.update(tab.id, {
+				'url': 'http://instapaper.com/'
+			});
+		} else if(localStorage['opt_doubleclicktoopeninstapaper'] == 'true') {
+			if(doubleClickCount) {
+				// Open Instapaper website
+				chrome.tabs.update(tab.id, {
+					'url': 'http://instapaper.com/'
+				});
+				
+				// Clear doubleClick status
+				clearInterval(doubleClickTimer);
+				doubleClickCount = 0;
+			} else {
+				doubleClickCount++;
+				
+				// If user fails to click again within the countdown, simply save the page
+				doubleClickTimer = setInterval(function() {
+					// Clear doubleClick status
+					clearInterval(doubleClickTimer);
+					doubleClickCount = 0;
+
+					handleSave();
+				}, 350);
+			}
+		} else { // Otherwise save page to Instapaper
+			handleSave();
 		}
 	};
 	chrome.browserAction.onClicked.addListener(handleClick);
