@@ -163,9 +163,9 @@ $(function() {
 	// handleStatus: displays proper badge feedback
 	var handleStatus = function(status) {
 		if(status == 201) {
-			badgeSet([0, 255, 0, 128], '+1');
+			badgeSetTemp([0, 255, 0, 128], '+1');
 		} else if (status == 403) { // Not authorized
-			badgeSet([0, 102, 153, 128], 'auth')
+			badgeSetTemp([0, 102, 153, 128], 'auth')
 			chrome.tabs.create({
 				'url': 'index.html#account'
 			})
