@@ -83,7 +83,7 @@ apiRemote.send=function(url,data,cb) {
     'oauth_timestamp': Math.round((new Date()).getTime()/1000)
   });
   data = apiRemote.sign(url,data);
-  
+
   $.ajax({
     'type': 'post',
     'cache': 0,
