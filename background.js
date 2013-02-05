@@ -155,7 +155,7 @@ $(function() {
   // saveToInstapaper: calls function from apiRemote
   var saveToInstapaper = function(url, callback, title) {
     //Create indicator to show that the request is being resolved
-    badgeSetTemp([0, 102, 153, 128], '...');
+    badgeSet([0, 102, 153, 128], '...');
 
     sendAdd(url, title, callback);
   };
