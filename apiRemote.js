@@ -2,11 +2,11 @@
 
 // sendAuth: API authenticate, returns status code
 function sendAuth(callback, username, password) {
-    if(typeof username == 'undefined' || typeof password == 'undefined') {
-        var username = localStorage['un'];
-        var password = localStorage['pw'];
-    }
-
+  if(typeof username == 'undefined' || typeof password == 'undefined') {
+    var username = localStorage['un'];
+    var password = localStorage['pw'];
+  }
+  
   $.ajax({
     'method': 'post',
     'cache': 0,
